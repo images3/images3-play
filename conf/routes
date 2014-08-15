@@ -3,5 +3,6 @@
 # ~~~~
 
 # Home page
-POST     /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.createImagePlant()
-
+POST    /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.addImagePlant()
+POST    /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.updateImagePlant(id:String)
+DELETE  /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.deleteImagePlant(id:String)

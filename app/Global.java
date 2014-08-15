@@ -1,5 +1,6 @@
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -29,6 +30,7 @@ public class Global extends GlobalSettings {
             @Override
             protected void configure() {
                 bind(ImageS3.class).toProvider(imageS3Provider).asEagerSingleton();
+                bind(ObjectMapper.class).toInstance(new ObjectMapper());
             }
             
         });

@@ -16,20 +16,32 @@ import play.mvc.Result;
 public class ImagePlantResource extends Controller {
     
     private ImageS3 imageS3;
+    private ObjectMapper objectMapper;
     
     @Inject
-    public ImagePlantResource(ImageS3 imageS3) {
+    public ImagePlantResource(ImageS3 imageS3, ObjectMapper objectMapper) {
         this.imageS3 = imageS3;
+        this.objectMapper = objectMapper;
     }
 
-    public Result createImagePlant() throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String respJson = null;
+    public Result addImagePlant() throws JsonParseException, JsonMappingException, IOException {
         ImagePlantRequest request = objectMapper.readValue(
                 request().body().asJson().toString(), ImagePlantRequest.class);
         ImagePlantResponse response = imageS3.addImagePlant(request);
-        respJson = objectMapper.writeValueAsString(response);
-        
+        String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
+    }
+    
+    public Result updateImagePlant(String id) throws JsonParseException, JsonMappingException, IOException {
+        ImagePlantRequest request = objectMapper.readValue(
+                request().body().asJson().toString(), ImagePlantRequest.class);
+        ImagePlantResponse response = imageS3.updateImagePlant(id, request);
+        String respJson = objectMapper.writeValueAsString(response);
+        return ok(respJson);
+    }
+    
+    public Result deleteImagePlant(String id) {
+        imageS3.deleteImagePlant(id);
+        return status(204);
     }
 }
