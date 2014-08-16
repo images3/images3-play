@@ -26,11 +26,5 @@ public class PaginatedResponse<T> {
     public T getResults() {
         return results;
     }
-
-    @Override
-    public String toString() {
-        return "PaginatedResponse [paging=" + paging + ", results=" + results
-                + "]";
-    }
     
 }

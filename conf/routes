@@ -4,7 +4,9 @@
 
 # Home page
 POST    /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.addImagePlant()
-POST    /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.updateImagePlant(id:String)
+PUT     /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.updateImagePlant()
 DELETE  /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.deleteImagePlant(id:String)
 GET     /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.getImagePlant(id:String)
-GET     /rest/v1/imageplants/all/                      @com.images3.rest.ImagePlantResource.getAllImagePlants()
+GET     /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.getAllImagePlants(page:String ?= null)
+POST    /rest/v1/templates                             @com.images3.rest.TemplateResource.addTemplate()
+PUT     /rest/v1/templates                             @com.images3.rest.TemplateResource.updateTemplate()

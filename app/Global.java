@@ -6,6 +6,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.images3.DuplicatedImagePlantNameException;
 import com.images3.ImageS3;
+import com.images3.NoSuchEntityFoundException;
 
 import play.Application;
 import play.GlobalSettings;
@@ -30,7 +31,7 @@ public class Global extends GlobalSettings {
             @Override
             protected void configure() {
                 bind(ImageS3.class).toProvider(imageS3Provider).asEagerSingleton();
-                bind(ObjectMapper.class).toInstance(new ObjectMapper());
+                bind(ObjectMapper.class).toProvider(new ObjectMapperProvider()).asEagerSingleton();;
             }
             
         });
@@ -47,9 +48,16 @@ public class Global extends GlobalSettings {
     
     public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
         if (DuplicatedImagePlantNameException.class.isInstance(t.getCause())) {
-            DuplicatedImagePlantNameException exception = (DuplicatedImagePlantNameException) t.getCause();
+            DuplicatedImagePlantNameException exception =
+                    (DuplicatedImagePlantNameException) t.getCause();
             String message = "ImagePlant name, \'" + exception.getName() + "\' has been taken.";
             return Promise.<Result>pure(Results.badRequest(message));
+        }
+        if (NoSuchEntityFoundException.class.isInstance(t.getCause())) {
+            NoSuchEntityFoundException exception =
+                    (NoSuchEntityFoundException) t.getCause();
+            String message = "No such item, " + exception.getName() + " {" + exception.getId() + "} found.";
+            return Promise.<Result>pure(Results.notFound(message));
         }
         return Promise.<Result>pure(Results.internalServerError());
     }

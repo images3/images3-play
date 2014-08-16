@@ -2,17 +2,15 @@ package com.images3.rest;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import org.gogoup.dddutils.pagination.PaginatedResult;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.images3.ImagePlantRequest;
+import com.images3.ImagePlantCreateRequest;
 import com.images3.ImagePlantResponse;
+import com.images3.ImagePlantUpdateRequest;
 import com.images3.ImageS3;
 
 import play.mvc.Controller;
@@ -30,17 +28,17 @@ public class ImagePlantResource extends Controller {
     }
 
     public Result addImagePlant() throws IOException {
-        ImagePlantRequest request = objectMapper.readValue(
-                request().body().asJson().toString(), ImagePlantRequest.class);
+        ImagePlantCreateRequest request = objectMapper.readValue(
+                request().body().asJson().toString(), ImagePlantCreateRequest.class);
         ImagePlantResponse response = imageS3.addImagePlant(request);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
     
-    public Result updateImagePlant(String id) throws IOException {
-        ImagePlantRequest request = objectMapper.readValue(
-                request().body().asJson().toString(), ImagePlantRequest.class);
-        ImagePlantResponse response = imageS3.updateImagePlant(id, request);
+    public Result updateImagePlant() throws IOException {
+        ImagePlantUpdateRequest request = objectMapper.readValue(
+                request().body().asJson().toString(), ImagePlantUpdateRequest.class);
+        ImagePlantResponse response = imageS3.updateImagePlant(request);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
@@ -56,26 +54,13 @@ public class ImagePlantResource extends Controller {
         return ok(respJson);
     }
     
-    public Result getAllImagePlants() throws IOException {
-        String pageToken = request().queryString().get("page")[0];
-        String cursor = session().get(pageToken);
-        Object pageCursor = null;
-        if (null != cursor) {
-            pageCursor = objectMapper.readValue(cursor, Object.class);
-        }
+    public Result getAllImagePlants(String page) throws JsonProcessingException {
         PaginatedResult<List<ImagePlantResponse>> pages = imageS3.getAllImagePlants();
-        if (null == pageCursor) {
-            pageCursor = pages.getNextPageCursor();
-        }
-        List<ImagePlantResponse> result = pages.getResult(pageCursor);
-        Object nextPageCursor = pages.getNextPageCursor();
-        String next = UUID.randomUUID().toString();
-        String nexPage = objectMapper.writeValueAsString(nextPageCursor);
-        session().put(next, nexPage);
+        List<ImagePlantResponse> result = pages.getResult(page);
+        String pageCursor = (String) pages.getNextPageCursor();
         PaginatedResponse<List<ImagePlantResponse>> response = 
-                new PaginatedResponse<List<ImagePlantResponse>>(null, next, result);
+                new PaginatedResponse<List<ImagePlantResponse>>(null, pageCursor, result);
         String respJson = objectMapper.writeValueAsString(response);
-        System.out.println("HERE======>response: " + response.toString());
         return ok(respJson);
     }
     
