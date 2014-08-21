@@ -6,13 +6,16 @@ import java.util.List;
 import org.gogoup.dddutils.pagination.PaginatedResult;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
 import com.images3.ImagePlantCreateRequest;
 import com.images3.ImagePlantResponse;
 import com.images3.ImagePlantUpdateRequest;
 import com.images3.ImageS3;
 
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -35,9 +38,10 @@ public class ImagePlantResource extends Controller {
         return ok(respJson);
     }
     
-    public Result updateImagePlant() throws IOException {
+    public Result updateImagePlant(String id) throws IOException {
         ImagePlantUpdateRequest request = objectMapper.readValue(
                 request().body().asJson().toString(), ImagePlantUpdateRequest.class);
+        request = new ImagePlantUpdateRequest(id, request.getName(), request.getBucket());
         ImagePlantResponse response = imageS3.updateImagePlant(request);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);

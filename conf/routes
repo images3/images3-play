@@ -3,10 +3,12 @@
 # ~~~~
 
 # Home page
-POST    /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.addImagePlant()
-PUT     /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.updateImagePlant()
-DELETE  /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.deleteImagePlant(id:String)
-GET     /rest/v1/imageplants/:id                       @com.images3.rest.ImagePlantResource.getImagePlant(id:String)
-GET     /rest/v1/imageplants                           @com.images3.rest.ImagePlantResource.getAllImagePlants(page:String ?= null)
-POST    /rest/v1/templates                             @com.images3.rest.TemplateResource.addTemplate()
-PUT     /rest/v1/templates                             @com.images3.rest.TemplateResource.updateTemplate()
+POST    /rest/v1/imageplants                                @com.images3.rest.ImagePlantResource.addImagePlant()
+PUT     /rest/v1/imageplants/:id                            @com.images3.rest.ImagePlantResource.updateImagePlant(id:String)
+DELETE  /rest/v1/imageplants/:id                            @com.images3.rest.ImagePlantResource.deleteImagePlant(id:String)
+GET     /rest/v1/imageplants/:id                            @com.images3.rest.ImagePlantResource.getImagePlant(id:String)
+GET     /rest/v1/imageplants                                @com.images3.rest.ImagePlantResource.getAllImagePlants(page:String ?= null)
+POST    /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.addTemplate(imagePlantId:String, name:String)
+PUT     /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.updateTemplate(imagePlantId:String, name:String)
+GET     /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.getTemplate(imagePlantId:String, name:String)
+DELETE  /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.deleteTemplate(imagePlantId:String, name:String)
