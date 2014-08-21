@@ -3,12 +3,12 @@ package com.images3.rest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PaginatedResponse<T> {
+public class PaginatedResultResponse<T> {
 
     private Map<String, String> paging;
     private T results;
     
-    public PaginatedResponse(String prev, String next, T results) {
+    public PaginatedResultResponse(String prev, String next, T results) {
         this.paging = new LinkedHashMap<String, String>(2);
         if (null != prev) {
             this.paging.put("prev", prev);

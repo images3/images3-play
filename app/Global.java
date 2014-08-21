@@ -8,6 +8,7 @@ import com.images3.DuplicateTemplateNameException;
 import com.images3.DuplicatedImagePlantNameException;
 import com.images3.ImageS3;
 import com.images3.NoSuchEntityFoundException;
+import com.images3.UnremovableTemplateException;
 
 import play.Application;
 import play.GlobalSettings;
@@ -64,6 +65,15 @@ public class Global extends GlobalSettings {
                     (NoSuchEntityFoundException) t.getCause();
             String message = "No such " + exception.getName() + " {" + exception.getId() + "} found.";
             return Promise.<Result>pure(Results.notFound(message));
+        }
+        if (UnremovableTemplateException.class.isInstance(t.getCause())) {
+            UnremovableTemplateException exception =
+                    (UnremovableTemplateException) t.getCause();
+            String message = "Remove template " + "{" + exception.getId().getTemplateName() + "} is not allowed.";
+            return Promise.<Result>pure(Results.notFound(message));
+        }
+        if (RuntimeException.class.isInstance(t.getCause())) {
+            return Promise.<Result>pure(Results.badRequest(t.getCause().getMessage())); 
         }
         return Promise.<Result>pure(Results.internalServerError());
     }

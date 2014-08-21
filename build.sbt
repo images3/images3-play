@@ -5,7 +5,8 @@ name := """images3-play"""
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
-  "com.google.inject" % "guice" % "3.0"
+  "com.google.inject" % "guice" % "3.0",
+  "joda-time" % "joda-time" % "2.4"
 )
 
 

@@ -6,21 +6,18 @@ import java.util.List;
 import org.gogoup.dddutils.pagination.PaginatedResult;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
 import com.images3.ImagePlantCreateRequest;
 import com.images3.ImagePlantResponse;
 import com.images3.ImagePlantUpdateRequest;
 import com.images3.ImageS3;
 
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 public class ImagePlantResource extends Controller {
-    
+
     private ImageS3 imageS3;
     private ObjectMapper objectMapper;
     
@@ -59,11 +56,12 @@ public class ImagePlantResource extends Controller {
     }
     
     public Result getAllImagePlants(String page) throws JsonProcessingException {
+        System.out.println("HERE======>page: " + page);
         PaginatedResult<List<ImagePlantResponse>> pages = imageS3.getAllImagePlants();
         List<ImagePlantResponse> result = pages.getResult(page);
         String pageCursor = (String) pages.getNextPageCursor();
-        PaginatedResponse<List<ImagePlantResponse>> response = 
-                new PaginatedResponse<List<ImagePlantResponse>>(null, pageCursor, result);
+        PaginatedResultResponse<List<ImagePlantResponse>> response = 
+                new PaginatedResultResponse<List<ImagePlantResponse>>(null, pageCursor, result);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

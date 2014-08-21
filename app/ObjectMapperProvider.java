@@ -1,11 +1,16 @@
+import java.util.Date;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.google.inject.Provider;
+import com.images3.ImageResponse;
 import com.images3.ResizingConfig;
 import com.images3.ResizingUnit;
 import com.images3.TemplateIdentity;
 import com.images3.TemplateResponse;
 import com.images3.TemplateUpdateRequest;
+import com.images3.rest.codec.ImageResponseSerializer;
 import com.images3.rest.codec.ResizingConfigDeserializer;
 import com.images3.rest.codec.ResizingConfigSerializer;
 import com.images3.rest.codec.ResizingUnitDeserializer;
@@ -21,11 +26,15 @@ public class ObjectMapperProvider implements Provider<ObjectMapper> {
     @Override
     public ObjectMapper get() {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(com.fasterxml.jackson.databind.SerializationFeature.
+            WRITE_DATES_AS_TIMESTAMPS , false);
         SimpleModule module = new SimpleModule();
         module.addSerializer(ResizingUnit.class, new ResizingUnitSerializer());
         module.addSerializer(ResizingConfig.class, new ResizingConfigSerializer());
         module.addSerializer(TemplateIdentity.class, new TemplateIdentitySerializer());
         module.addSerializer(TemplateResponse.class, new TemplateResponseSerializer());
+        module.addSerializer(ImageResponse.class, new ImageResponseSerializer());
+        module.addSerializer(Date.class, new DateSerializer());
         
         module.addDeserializer(ResizingUnit.class, new ResizingUnitDeserializer());
         module.addDeserializer(ResizingConfig.class, new ResizingConfigDeserializer());
