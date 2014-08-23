@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.images3.ResizingConfig;
+import com.images3.common.ResizingConfig;
 
 public class ResizingConfigSerializer extends JsonSerializer<ResizingConfig> {
 

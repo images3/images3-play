@@ -5,10 +5,9 @@ import java.util.List;
 
 import org.gogoup.dddutils.pagination.PaginatedResult;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.images3.ImagePlantCreateRequest;
+import com.images3.ImagePlantAddRequest;
 import com.images3.ImagePlantResponse;
 import com.images3.ImagePlantUpdateRequest;
 import com.images3.ImageS3;
@@ -28,8 +27,8 @@ public class ImagePlantResource extends Controller {
     }
 
     public Result addImagePlant() throws IOException {
-        ImagePlantCreateRequest request = objectMapper.readValue(
-                request().body().asJson().toString(), ImagePlantCreateRequest.class);
+        ImagePlantAddRequest request = objectMapper.readValue(
+                request().body().asJson().toString(), ImagePlantAddRequest.class);
         ImagePlantResponse response = imageS3.addImagePlant(request);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
@@ -49,14 +48,13 @@ public class ImagePlantResource extends Controller {
         return status(204);
     }
     
-    public Result getImagePlant(String id) throws JsonProcessingException {
+    public Result getImagePlant(String id) throws IOException {
         ImagePlantResponse response = imageS3.getImagePlant(id);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
     
-    public Result getAllImagePlants(String page) throws JsonProcessingException {
-        System.out.println("HERE======>page: " + page);
+    public Result getAllImagePlants(String page) throws IOException {
         PaginatedResult<List<ImagePlantResponse>> pages = imageS3.getAllImagePlants();
         List<ImagePlantResponse> result = pages.getResult(page);
         String pageCursor = (String) pages.getNextPageCursor();

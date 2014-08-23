@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.images3.DuplicateTemplateNameException;
-import com.images3.DuplicatedImagePlantNameException;
+import com.images3.common.DuplicateTemplateNameException;
+import com.images3.common.DuplicatedImagePlantNameException;
 import com.images3.ImageS3;
-import com.images3.NoSuchEntityFoundException;
-import com.images3.UnremovableTemplateException;
+import com.images3.common.NoSuchEntityFoundException;
+import com.images3.common.UnremovableTemplateException;
 
 import play.Application;
 import play.GlobalSettings;
@@ -24,7 +24,7 @@ public class Global extends GlobalSettings {
     
     public void onStart(Application app) {
         final ImageS3Provider imageS3Provider = new ImageS3Provider(
-                app.configuration().getString("imagecontent.conf"),
+                app.configuration().getString("images3.conf"),
                 app.configuration().getString("imageprocessor.conf"),
                 app.configuration().getString("mongodb.conf")
                 );

@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.gogoup.dddutils.pagination.PaginatedResult;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.images3.ImageS3;
-import com.images3.TemplateCreateRequest;
-import com.images3.TemplateIdentity;
+import com.images3.TemplateAddRequest;
+import com.images3.common.TemplateIdentity;
 import com.images3.TemplateResponse;
 import com.images3.TemplateUpdateRequest;
 
@@ -29,9 +28,9 @@ public class TemplateResource extends Controller {
     }
     
     public Result addTemplate(String imagePlantId, String name) throws IOException {
-        TemplateCreateRequest request = objectMapper.readValue(
-                request().body().asJson().toString(), TemplateCreateRequest.class);
-        request = new TemplateCreateRequest(
+        TemplateAddRequest request = objectMapper.readValue(
+                request().body().asJson().toString(), TemplateAddRequest.class);
+        request = new TemplateAddRequest(
                 new TemplateIdentity(imagePlantId, name),
                 request.getResizingConfig()
                 );
@@ -63,23 +62,23 @@ public class TemplateResource extends Controller {
         return status(204);
     }
     
-    public Result getTemplates(String id, String page) throws JsonProcessingException {
+    public Result getTemplates(String id, String page) throws IOException {
         PaginatedResult<List<TemplateResponse>> pages = imageS3.getAllTemplates(id);
         return getPaginatedResultResponse(pages, page);
     }
     
-    public Result getActiveTemplates(String id, String page) throws JsonProcessingException {
+    public Result getActiveTemplates(String id, String page) throws IOException {
         PaginatedResult<List<TemplateResponse>> pages = imageS3.getActiveTempaltes(id);
         return getPaginatedResultResponse(pages, page);
     }
     
-    public Result getArchivedTemplates(String id, String page) throws JsonProcessingException {
+    public Result getArchivedTemplates(String id, String page) throws IOException {
         PaginatedResult<List<TemplateResponse>> pages = imageS3.getArchivedTemplates(id);
         return getPaginatedResultResponse(pages, page);
     }
     
     private Result getPaginatedResultResponse(PaginatedResult<List<TemplateResponse>> pages, 
-            String page) throws JsonProcessingException {
+            String page) throws IOException {
         List<TemplateResponse> templates = pages.getResult(page);
         String nextPageCursor = (String) pages.getNextPageCursor();
         PaginatedResultResponse<List<TemplateResponse>> response = 

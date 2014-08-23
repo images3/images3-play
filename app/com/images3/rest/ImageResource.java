@@ -2,13 +2,17 @@ package com.images3.rest;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
+import org.gogoup.dddutils.pagination.PaginatedResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.images3.ImageRequest;
+import com.images3.ImageAddRequest;
 import com.images3.ImageResponse;
 import com.images3.ImageS3;
-
+import com.images3.SimpleImageResponse;
+import com.images3.common.ImageIdentity;
 
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -26,10 +30,57 @@ public class ImageResource extends Controller {
     
     public Result addImage(String imagePlantId) throws IOException {
         File imageContent = request().body().asRaw().asFile();
-        ImageRequest request = new ImageRequest(imagePlantId, imageContent);
+        ImageAddRequest request = new ImageAddRequest(imagePlantId, imageContent);
         ImageResponse response = imageS3.addImage(request);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
     
+    public Result getImage(String imagePlantId, String imageId) throws IOException {
+        ImageResponse response = imageS3.getImage(new ImageIdentity(imagePlantId, imageId));
+        String respJson = objectMapper.writeValueAsString(response);
+        return ok(respJson); 
+    }
+    
+    public Result getImageWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
+        ImageResponse response = imageS3.getImage(new ImageIdentity(imagePlantId, imageId), templateName);
+        String respJson = objectMapper.writeValueAsString(response);
+        return ok(respJson); 
+    }
+    
+    public Result getImages(String imagePlantId, String page) throws IOException {
+        PaginatedResult<List<SimpleImageResponse>> pages = imageS3.getImages(imagePlantId);
+        return getPaginatedResultResponse(pages, page);
+    }
+    
+    public Result getImagesByTemplate(String imagePlantId, String templateName, String page) throws IOException {
+        PaginatedResult<List<SimpleImageResponse>> pages = imageS3.getImages(imagePlantId, templateName);
+        return getPaginatedResultResponse(pages, page);
+    }
+    
+    public Result getVersioningImages(String imagePlantId, String imageId, String page) throws IOException {
+        PaginatedResult<List<SimpleImageResponse>> pages = 
+                imageS3.getVersioningImages(new ImageIdentity(imagePlantId, imageId));
+        return getPaginatedResultResponse(pages, page);
+    }
+    
+    private Result getPaginatedResultResponse(PaginatedResult<List<SimpleImageResponse>> pages, 
+            String page) throws IOException {
+        List<SimpleImageResponse> images = pages.getResult(page);
+        String nextPageCursor = (String) pages.getNextPageCursor();
+        PaginatedResultResponse<List<SimpleImageResponse>> response = 
+                new PaginatedResultResponse<List<SimpleImageResponse>>(null, nextPageCursor, images);
+        String respJson = objectMapper.writeValueAsString(response);
+        return ok(respJson);
+    }
+    
+    public Result getImageContent(String imagePlantId, String imageId) throws IOException {
+        File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId));
+        return ok(content, content.getName()); 
+    }
+    
+    public Result getImageContentWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
+        File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId), templateName);
+        return ok(content, content.getName()); 
+    }
 }
