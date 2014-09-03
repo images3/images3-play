@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar sidebar-fixed" >
+            <ul class="nav nav-sidebar">
+                <li>
+                    <a ui-sref="imageplants">ImagePlants</a>
+                </li>
+                <li ng-class="{active: $state.includes('imageplant.info')}">
+                    <a ui-sref=".info">{{imagePlant.name}}</a>
+                </li>
+                <li ng-class="{active: $state.includes('imageplant.templates')}">
+                    <a ui-sref=".templates">Templates</a>
+                </li>
+                <li ng-class="{active: $state.includes('imageplant.images')}">
+                    <a ui-sref=".images">Images</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>

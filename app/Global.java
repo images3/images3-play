@@ -77,4 +77,10 @@ public class Global extends GlobalSettings {
         }
         return Promise.<Result>pure(Results.internalServerError());
     }
+    
+    public Promise<Result> onHandlerNotFound(Http.RequestHeader request) {
+        System.out.println("HERE=======>request: " + request);
+        return Promise.<Result>pure(Results.redirect("/404.html"));
+    }
+    
 }

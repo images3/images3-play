@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 main">
+            <h2 class="sub-header">ImagePlants</h2>
+        </div>
+        <div class="col-sm-12 col-md-12 main">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Bucket</th>
+                        <th>Master Template</th>
+                        <th>Created Time</th>
+                        <th>Templates</th>
+                        <th>Images</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="imagePlant in imagePlants" ng-click="viewImagePlant(imagePlant)">
+                    <tr>
+                        <td>{{imagePlant.name}}</td>
+                        <td>{{imagePlant.bucket.name}}</td>
+                        <td>{{imagePlant.masterTemplate.id.templateName}}</td>
+                        <td>{{imagePlant.creationTime}}</td>
+                        <td>2</td>
+                        <td>1,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<h2 class="page-header">Templates</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Width</th>
+            <th>Height</th>
+            <th>Unit</th>
+            <th>Keep Proportions</th>
+            <th>Archived</th>
+            <th>Removable</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="template in templates">
+        <tr>
+            <td>{{template.id.templateName}}</td>
+            <td>{{template.resizingConfig.width}}</td>
+            <td>{{template.resizingConfig.height}}</td>
+            <td>{{template.resizingConfig.unit}}</td>
+            <td>{{template.resizingConfig.isKeepProportions}}</td>
+            <td>{{template.isArchived}}</td>
+            <td>{{template.isRemovable}}</td>
+        </tr>
+    </tbody>
+</table>

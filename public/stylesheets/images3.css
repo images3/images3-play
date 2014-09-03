@@ -1,0 +1,41 @@
+.logo-images3 {
+    background: url(/images/icon_26.png) no-repeat center center;
+    background-size: 26px auto;
+    display: inline-block;
+	height: 26px;
+	width: 26px;
+	margin-right: 8px;
+	vertical-align: -7px;
+}
+
+.brand {
+	display: block;
+	margin-top: 12px;
+	margin-left: 4px;
+	font-size: 18px;
+	color: #fff;	
+    font-weight: normal;
+}
+
+div a:hover {
+	text-decoration: none;
+	color: #fff; 
+}
+
+.sidebar-fixed {
+    position: absolute;
+}
+
+.sidebar-fixed ul li {
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.sidebar-brand {
+	padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.sidebar-fixed ul li a {
+	padding-top: 15px;
+    padding-bottom: 15px;
+}

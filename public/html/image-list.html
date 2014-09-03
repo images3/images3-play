@@ -1,0 +1,26 @@
+<h2 class="page-header">Images</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Uploaded Time</th>
+            <th>Width</th>
+            <th>Height</th>
+            <th>Format</th>
+            <th>Size</th>
+            <th>Version</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="image in images" ng-click="viewImageContent(image)">
+        <tr data-toggle="modal" data-target="#myModal">
+            <td>{{image.id.imageId}}</td>
+            <td>{{image.dateTime}}</td>
+            <td>{{image.metadata.dimension.width}}px</td>
+            <td>{{image.metadata.dimension.height}}px</td>
+            <td>{{image.metadata.format}}</td>
+            <td>{{image.metadata.size}}</td>
+            <td>{{image.version.templateName}}</td>
+            <div ui-view></div>
+        </tr>
+    </tbody>
+</table>
