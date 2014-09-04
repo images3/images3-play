@@ -11,7 +11,7 @@ imageS3Controllers.controller('ImagePlantListController', ['$scope', '$state', '
 			$scope.imagePlants = response.results;
 		
 			$scope.viewImagePlant = function(imagePlant) {
-				$state.go('imageplant.templates',{imagePlantId: imagePlant.id});
+				$state.go('imageplant.info',{imagePlantId: imagePlant.id});
 			}
 	})}
 

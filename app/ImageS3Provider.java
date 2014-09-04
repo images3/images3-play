@@ -26,6 +26,7 @@ public class ImageS3Provider implements Provider<ImageS3> {
             .setImageAccess(objectSegmentAccessProvider.getImageAccess())
             .setImagePlantAccess(objectSegmentAccessProvider.getImagePlantAccess())
             .setTempalteAccess(objectSegmentAccessProvider.getTemplateAccess())
+            .setImageMetricsService(objectSegmentAccessProvider.getImageMetricsService())
             .build();
     }
 
