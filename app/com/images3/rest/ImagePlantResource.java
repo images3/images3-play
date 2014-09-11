@@ -56,10 +56,14 @@ public class ImagePlantResource extends Controller {
     
     public Result getAllImagePlants(String page) throws IOException {
         PaginatedResult<List<ImagePlantResponse>> pages = imageS3.getAllImagePlants();
+        if (null == page 
+                || page.trim().length() == 0) {
+            page = (String) pages.getFirstPageCursor();
+        }
         List<ImagePlantResponse> result = pages.getResult(page);
-        String pageCursor = (String) pages.getNextPageCursor();
+        page = (String) pages.getNextPageCursor();
         PaginatedResultResponse<List<ImagePlantResponse>> response = 
-                new PaginatedResultResponse<List<ImagePlantResponse>>(null, pageCursor, result);
+                new PaginatedResultResponse<List<ImagePlantResponse>>(null, page, result);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

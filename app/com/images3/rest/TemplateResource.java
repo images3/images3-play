@@ -79,10 +79,14 @@ public class TemplateResource extends Controller {
     
     private Result getPaginatedResultResponse(PaginatedResult<List<TemplateResponse>> pages, 
             String page) throws IOException {
+        if (null == page 
+                || page.trim().length() == 0) {
+            page = (String) pages.getFirstPageCursor();
+        }
         List<TemplateResponse> templates = pages.getResult(page);
-        String nextPageCursor = (String) pages.getNextPageCursor();
+        page = (String) pages.getNextPageCursor();
         PaginatedResultResponse<List<TemplateResponse>> response = 
-                new PaginatedResultResponse<List<TemplateResponse>>(null, nextPageCursor, templates);
+                new PaginatedResultResponse<List<TemplateResponse>>(null, page, templates);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
