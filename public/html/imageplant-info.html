@@ -1,40 +1,33 @@
 <h2 class="page-header">Overview</h2>
 <div class="container-fluid" style="padding-top: 20px;">
     <div class="row">
-        <div class="col-sm-5 col-md-7">
-            <div class="panel panel-default">
-	            <div class="panel-heading">ImagePlant Profile</div>
-	            <ul class="list-group">
-	                <li class="list-group-item">
-	                    <strong>Name:</strong><span style="padding-right: 70px;"></span>{{imagePlant.name}}
-	                </li>
-	                <li class="list-group-item">
-	                    <strong>S3 Bucket:</strong><span style="padding-right: 41px;"></span>{{imagePlant.bucket.name}}
-	                </li>
-	                <li class="list-group-item">
-	                    <strong>Created Time:</strong><span style="padding-right: 20px;"></span>{{imagePlant.creationTime}}
-	                </li>
-	            </ul>
-            </div>
-            <div style="padding-top: 20px;"></div>
-            <div class="panel panel-default">
-		        <div class="panel-heading">Master Template</div>
-	            <ul class="list-group">
-	                <li class="list-group-item">
-	                    <strong>Width:</strong><span style="padding-right: 95px;"></span>{{imagePlant.masterTemplate.resizingConfig.width}}
-	                </li>
-	                <li class="list-group-item">
-	                    <strong>Height:</strong><span style="padding-right: 90px;"></span>{{imagePlant.masterTemplate.resizingConfig.height}}
-	                </li>
-	                <li class="list-group-item">
-	                    <strong>Unit:</strong><span style="padding-right: 110px;"></span>{{imagePlant.masterTemplate.resizingConfig.unit}}
-	                </li>
-	                <li class="list-group-item">
-	                    <strong>Keep Proportions:</strong><span style="padding-right: 20px;"></span>{{imagePlant.masterTemplate.resizingConfig.isKeepProportions}}
-	                </li>
-	            </ul>
-            </div>
+        <div class="col-sm-12 col-md-12">
+            <div id="imageMetricsChart"></div>
+            <script>
+            new Morris.Line({
+            	  // ID of the element in which to draw the chart.
+            	  element: 'imageMetricsChart',
+            	  // Chart data records -- each entry in this array corresponds to a point on
+            	  // the chart.
+            	  data: [
+            	    { y: '2014-09-12 01:02:14', a: 100, b: 90 },
+            	    { y: '2014-09-12 01:03:14', a: 75,  b: 65 },
+            	    { y: '2014-09-12 01:04:14', a: 50,  b: 40 },
+            	    { y: '2014-09-12 01:05:14', a: 75,  b: 65 },
+            	    { y: '2014-09-12 01:06:14', a: 50,  b: 40 },
+            	    { y: '2014-09-12 01:07:14', a: 75,  b: 65 },
+            	    { y: '2014-09-12 01:08:14', a: 100, b: 90 }
+            	  ],
+            	  // The name of the data record attribute that contains x-values.
+            	  xkey: 'y',
+            	  // A list of names of data record attributes that contain y-values.
+            	  ykeys: ['a', 'b'],
+            	  // Labels for the ykeys -- will be displayed when you hover over the
+            	  // chart.
+            	  labels: ['Counts', 'size']
+            	});
+            </script>
         </div>
-        
     </div>
+    
 </div>
