@@ -7,7 +7,8 @@ GET     /                               controllers.Assets.at(path="/public/html
 GET     /index.html                     controllers.Assets.at(path="/public/html", file="index.html")
 GET     /imageplant-list.html           controllers.Assets.at(path="/public/html", file="imageplant-list.html")
 GET     /imageplant.html                controllers.Assets.at(path="/public/html", file="imageplant.html")
-GET     /imageplant-info.html           controllers.Assets.at(path="/public/html", file="imageplant-info.html")
+GET     /imageplant-overview.html       controllers.Assets.at(path="/public/html", file="imageplant-overview.html")
+GET     /image-report.html              controllers.Assets.at(path="/public/html", file="image-report.html")
 GET     /template-list.html             controllers.Assets.at(path="/public/html", file="template-list.html")
 GET     /image-list.html                controllers.Assets.at(path="/public/html", file="image-list.html")
 GET     /image-content.html             controllers.Assets.at(path="/public/html", file="image-content.html")
@@ -22,6 +23,8 @@ PUT     /rest/v1/imageplants/:id                            @com.images3.rest.Im
 DELETE  /rest/v1/imageplants/:id                            @com.images3.rest.ImagePlantResource.deleteImagePlant(id:String)
 GET     /rest/v1/imageplants/:id                            @com.images3.rest.ImagePlantResource.getImagePlant(id:String)
 GET     /rest/v1/imageplants                                @com.images3.rest.ImagePlantResource.getAllImagePlants(page:String ?= null)
+GET     /rest/v1/imageplants/:id/imagereport                @com.images3.rest.ImagePlantResource.getImageReport(id:String, templateName:String ?= null, startTime:Long, length:Long, timeUnit:String, types:String)
+
 POST    /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.addTemplate(imagePlantId:String, name:String)
 PUT     /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.updateTemplate(imagePlantId:String, name:String)
 GET     /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.getTemplate(imagePlantId:String, name:String)
@@ -31,6 +34,7 @@ GET     /rest/v1/imageplants/:imagePlantId/templates/active/          @com.image
 GET     /rest/v1/imageplants/:imagePlantId/templates/archived/        @com.images3.rest.TemplateResource.getArchivedTemplates(imagePlantId:String, page:String ?= null)
 POST    /rest/v1/imageplants/:imagePlantId/images                    @com.images3.rest.ImageResource.addImage(imagePlantId:String)
 GET     /rest/v1/imageplants/:imagePlantId/images                    @com.images3.rest.ImageResource.getImages(imagePlantId:String, page:String ?= null)
+
 GET     /rest/v1/imageplants/:imagePlantId/images/:imageId/info                         @com.images3.rest.ImageResource.getImage(imagePlantId:String, imageId:String)
 GET     /rest/v1/imageplants/:imagePlantId/images/:imageId/info/:templateName           @com.images3.rest.ImageResource.getImageWithTemplate(imagePlantId:String, imageId:String, templateName:String)
 GET     /rest/v1/imageplants/:imagePlantId/templates/:templateName/images/         @com.images3.rest.ImageResource.getImagesByTemplate(imagePlantId:String, templateName:String, page:String ?= null)

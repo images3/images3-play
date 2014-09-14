@@ -1,19 +1,29 @@
 package com.images3.rest;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.gogoup.dddutils.pagination.PaginatedResult;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.images3.ImagePlantAddRequest;
 import com.images3.ImagePlantResponse;
 import com.images3.ImagePlantUpdateRequest;
+import com.images3.ImageReportQueryRequest;
+import com.images3.ImageReportResponse;
 import com.images3.ImageS3;
+import com.images3.common.ImageReportType;
+import com.images3.common.TimeInterval;
 
+import play.libs.F.Callback;
+import play.libs.F.Callback0;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.WebSocket;
 
 public class ImagePlantResource extends Controller {
 
@@ -66,6 +76,32 @@ public class ImagePlantResource extends Controller {
                 new PaginatedResultResponse<List<ImagePlantResponse>>(null, page, result);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
+    }
+    
+    public Result getImageReport(String id, String templateName, Long startTime,
+            Long length, String timeUnit, String types) throws JsonProcessingException {
+        if (null != templateName 
+                && templateName.trim().length() == 0) {
+            templateName = null;
+        }
+        TimeInterval interval = 
+                new TimeInterval(new Date(startTime), length, TimeUnit.valueOf(timeUnit));
+        ImageReportQueryRequest request = 
+                new ImageReportQueryRequest(
+                        id, templateName, interval, getImageReportTypes(types));
+        ImageReportResponse response = imageS3.getImageReport(request);
+        String respJson = objectMapper.writeValueAsString(response);
+        return ok(respJson);
+    }
+    
+    private ImageReportType[] getImageReportTypes(String typeString) {
+        String [] types = typeString.split(",");
+        ImageReportType[] reportTypes = new ImageReportType[types.length];
+        int index = 0;
+        for (String type: types) {
+            reportTypes[index++] = ImageReportType.valueOf(type.trim());
+        }
+        return reportTypes;
     }
     
 }

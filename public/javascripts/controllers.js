@@ -11,7 +11,7 @@ imageS3Controllers.controller('ImagePlantListController', ['$scope', '$state', '
 			$scope.imagePlants = response.results;
 		
 			$scope.viewImagePlant = function(imagePlant) {
-				$state.go('imageplant.info',{imagePlantId: imagePlant.id});
+				$state.go('imageplant.overview',{imagePlantId: imagePlant.id});
 			}
 	})}
 
@@ -46,8 +46,87 @@ imageS3Controllers.controller('ImageListController', ['$scope', '$state', '$stat
 ]);
 
 imageS3Controllers.controller('ImageContentController', ['$scope', '$state', '$stateParams', 
-    function ($scope, $state, $stateParams, Images) {
+    function ($scope, $state, $stateParams) {
 		$scope.imagePlantId = $stateParams.imagePlantId;
 		$scope.imageId = $stateParams.imageId;
 	}
 ]);
+
+imageS3Controllers.controller('ImageReportController', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'ImagePlants',
+    function ($rootScope, $scope, $state, $stateParams, $timeout, ImagePlants) {
+		var start = new Date().getTime() - (10 * 60 * 1000); //back 10 mins
+		var refreshRate = 10 * 1000; //milliseconds
+		(function tick() {
+			ImagePlants.getImageReport(
+					{
+						id: $stateParams.imagePlantId,
+						templateName: '',
+						startTime: start,
+						length: '10',
+						timeUnit: 'MINUTES',
+						types: 'COUNTS, SIZE'
+						},
+					function(response) {
+				var countData = generateImageReportMorrisData(response.times, response.values.COUNTS);
+				drawImageReportCounts(countData);
+				var sizeData = generateImageReportMorrisData(response.times, response.values.SIZE);
+				drawImageReportSize(sizeData);
+			});
+			if (authRefreshImageReport) {
+				start = start + refreshRate;
+				$timeout(tick, refreshRate);
+			}
+		})();
+	}
+]);
+
+function generateImageReportMorrisData(times, values) {
+	var data = [];
+	for (i=0; i<times.length; i++) {
+		var item = {
+				y: times[i],
+				a: values[i]
+		};
+		data[i] = item;
+	}
+	return data;
+}
+
+function drawImageReportCounts(items) {
+	if (null == imageReportCounts) {
+		imageReportCounts = new Morris.Line({
+		    element: 'counts',
+		    data: items,
+		    xkey: 'y',
+		    ykeys: ['a'],
+		    labels: ['Counts'],
+		    lineWidth: 2,
+		    pointSize: 2,
+		    smooth: false,
+		    xLabels: 'minute',
+		    hideHover: true,
+		  });
+	} else {
+		imageReportCounts.setData(items);
+	}
+}
+
+function drawImageReportSize(items) {
+	if (null == imageReportSize) {
+		imageReportSize = new Morris.Line({
+		    element: 'size',
+		    data: items,
+		    xkey: 'y',
+		    ykeys: ['a'],
+		    labels: ['Bytes'],
+		    lineWidth: 2,
+		    pointSize: 2,
+		    smooth: false,
+		    xLabels: 'minute',
+		    hideHover: true,
+		  });
+	} else {
+		imageReportSize.setData(items);
+	}
+}
+

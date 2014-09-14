@@ -13,6 +13,7 @@ import com.images3.ImageResponse;
 import com.images3.ImageS3;
 import com.images3.SimpleImageResponse;
 import com.images3.common.ImageIdentity;
+import com.images3.common.TemplateIdentity;
 
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -54,7 +55,8 @@ public class ImageResource extends Controller {
     }
     
     public Result getImagesByTemplate(String imagePlantId, String templateName, String page) throws IOException {
-        PaginatedResult<List<SimpleImageResponse>> pages = imageS3.getImages(imagePlantId, templateName);
+        PaginatedResult<List<SimpleImageResponse>> pages = 
+                imageS3.getImages(new TemplateIdentity(imagePlantId, templateName));
         return getPaginatedResultResponse(pages, page);
     }
     

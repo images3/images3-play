@@ -18,6 +18,18 @@ imageS3Services.factory('ImagePlants', ['$resource', function($resource) {
 						url: '/rest/v1/imageplants/:id',
 						method: 'GET',
 						params:{id: '@id'},
+						isArray: false},
+				getImageReport: {
+						url: '/rest/v1/imageplants/:id/imagereport',
+						method: 'GET',
+						params:{
+							id: '@id',
+							templateName: '@templateName',
+							startTime: '@startTime',
+							length: '@length',
+							timeUnit: '@timeUnit',
+							types: '@types'
+							},
 						isArray: false}
 			});
 }]);
