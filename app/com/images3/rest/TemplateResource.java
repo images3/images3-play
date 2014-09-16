@@ -84,9 +84,10 @@ public class TemplateResource extends Controller {
             page = (String) pages.getFirstPageCursor();
         }
         List<TemplateResponse> templates = pages.getResult(page);
-        page = (String) pages.getNextPageCursor();
+        String nextPage = (String) pages.getNextPageCursor();
+        String prevPage = (String) pages.getPrevPageCursor();
         PaginatedResultResponse<List<TemplateResponse>> response = 
-                new PaginatedResultResponse<List<TemplateResponse>>(null, page, templates);
+                new PaginatedResultResponse<List<TemplateResponse>>(prevPage, nextPage, templates);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

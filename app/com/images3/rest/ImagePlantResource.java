@@ -19,11 +19,8 @@ import com.images3.ImageS3;
 import com.images3.common.ImageReportType;
 import com.images3.common.TimeInterval;
 
-import play.libs.F.Callback;
-import play.libs.F.Callback0;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.WebSocket;
 
 public class ImagePlantResource extends Controller {
 
@@ -70,10 +67,12 @@ public class ImagePlantResource extends Controller {
                 || page.trim().length() == 0) {
             page = (String) pages.getFirstPageCursor();
         }
+        System.out.println("HERE======>PAGE: " + page);
         List<ImagePlantResponse> result = pages.getResult(page);
-        page = (String) pages.getNextPageCursor();
+        String nextPage = (String) pages.getNextPageCursor();
+        String prevPage = (String) pages.getPrevPageCursor();
         PaginatedResultResponse<List<ImagePlantResponse>> response = 
-                new PaginatedResultResponse<List<ImagePlantResponse>>(null, page, result);
+                new PaginatedResultResponse<List<ImagePlantResponse>>(prevPage, nextPage, result);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

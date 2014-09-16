@@ -73,9 +73,10 @@ public class ImageResource extends Controller {
             page = (String) pages.getFirstPageCursor();
         }
         List<SimpleImageResponse> images = pages.getResult(page);
-        page = (String) pages.getNextPageCursor();
+        String nextPage = (String) pages.getNextPageCursor();
+        String prevPage = (String) pages.getPrevPageCursor();
         PaginatedResultResponse<List<SimpleImageResponse>> response = 
-                new PaginatedResultResponse<List<SimpleImageResponse>>(null, page, images);
+                new PaginatedResultResponse<List<SimpleImageResponse>>(prevPage, nextPage, images);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
