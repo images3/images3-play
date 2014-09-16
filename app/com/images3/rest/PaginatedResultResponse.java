@@ -5,22 +5,18 @@ import java.util.Map;
 
 public class PaginatedResultResponse<T> {
 
-    private Map<String, String> paging;
+    private Map<String, String> page;
     private T results;
     
     public PaginatedResultResponse(String prev, String next, T results) {
-        this.paging = new LinkedHashMap<String, String>(2);
-        if (null != prev) {
-            this.paging.put("prev", prev);
-        }
-        if (null != next) {
-            this.paging.put("next", next);
-        }
+        this.page = new LinkedHashMap<String, String>(2);
+        this.page.put("prev", prev);
+        this.page.put("next", next);
         this.results = results;
     }
 
-    public Map<String, String> getPaging() {
-        return paging;
+    public Map<String, String> getPage() {
+        return page;
     }
 
     public T getResults() {

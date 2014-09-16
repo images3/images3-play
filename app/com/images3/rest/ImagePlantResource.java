@@ -67,7 +67,6 @@ public class ImagePlantResource extends Controller {
                 || page.trim().length() == 0) {
             page = (String) pages.getFirstPageCursor();
         }
-        System.out.println("HERE======>PAGE: " + page);
         List<ImagePlantResponse> result = pages.getResult(page);
         String nextPage = (String) pages.getNextPageCursor();
         String prevPage = (String) pages.getPrevPageCursor();
