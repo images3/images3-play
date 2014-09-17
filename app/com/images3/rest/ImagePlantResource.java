@@ -16,7 +16,7 @@ import com.images3.ImagePlantUpdateRequest;
 import com.images3.ImageReportQueryRequest;
 import com.images3.ImageReportResponse;
 import com.images3.ImageS3;
-import com.images3.common.ImageReportType;
+import com.images3.common.ImageMetricsType;
 import com.images3.common.TimeInterval;
 
 import play.mvc.Controller;
@@ -92,12 +92,12 @@ public class ImagePlantResource extends Controller {
         return ok(respJson);
     }
     
-    private ImageReportType[] getImageReportTypes(String typeString) {
+    private ImageMetricsType[] getImageReportTypes(String typeString) {
         String [] types = typeString.split(",");
-        ImageReportType[] reportTypes = new ImageReportType[types.length];
+        ImageMetricsType[] reportTypes = new ImageMetricsType[types.length];
         int index = 0;
         for (String type: types) {
-            reportTypes[index++] = ImageReportType.valueOf(type.trim());
+            reportTypes[index++] = ImageMetricsType.valueOf(type.trim());
         }
         return reportTypes;
     }
