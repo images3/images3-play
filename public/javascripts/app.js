@@ -69,6 +69,11 @@ imageS3.config(['$stateProvider', '$urlRouterProvider',
 				url: '/:imageId/imagecontent',
 				templateUrl: 'image-content.html',
 				controller: 'ImageContentController'
+			})
+			.state('imageplant.info', {
+				url: '/info',
+				templateUrl: 'imageplant-info.html',
+				controller: 'ImagePlantController'
 			});
 	}
 ]);

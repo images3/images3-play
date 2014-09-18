@@ -8,6 +8,7 @@ GET     /index.html                     controllers.Assets.at(path="/public/html
 GET     /imageplant-list.html           controllers.Assets.at(path="/public/html", file="imageplant-list.html")
 GET     /imageplant.html                controllers.Assets.at(path="/public/html", file="imageplant.html")
 GET     /imageplant-overview.html       controllers.Assets.at(path="/public/html", file="imageplant-overview.html")
+GET     /imageplant-info.html           controllers.Assets.at(path="/public/html", file="imageplant-info.html")
 GET     /image-report.html              controllers.Assets.at(path="/public/html", file="image-report.html")
 GET     /template-list.html             controllers.Assets.at(path="/public/html", file="template-list.html")
 GET     /image-list.html                controllers.Assets.at(path="/public/html", file="image-list.html")
