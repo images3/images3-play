@@ -64,12 +64,14 @@ imageS3Controllers.controller('ImageReportController', ['$rootScope', '$scope', 
 						startTime: start,
 						length: '10',
 						timeUnit: 'MINUTES',
-						types: 'COUNTS, SIZE'
+						types: 'COUNTS_INBOUND, COUNTS_OUTBOUND, SIZE_INBOUND, SIZE_OUTBOUND'
 						},
 					function(response) {
-				var countData = generateImageReportMorrisData(response.times, response.values.COUNTS);
+				var countData = generateImageReportMorrisData(
+						response.times, response.values.COUNTS_INBOUND, response.values.COUNTS_OUTBOUND);
 				drawImageReportCounts(countData);
-				var sizeData = generateImageReportMorrisData(response.times, response.values.SIZE);
+				var sizeData = generateImageReportMorrisData(
+						response.times, response.values.SIZE_INBOUND, response.values.SIZE_OUTBOUND);
 				drawImageReportSize(sizeData);
 			});
 			if (authRefreshImageReport) {
@@ -80,12 +82,13 @@ imageS3Controllers.controller('ImageReportController', ['$rootScope', '$scope', 
 	}
 ]);
 
-function generateImageReportMorrisData(times, values) {
+function generateImageReportMorrisData(times, inboundValues, outboundValues) {
 	var data = [];
 	for (i=0; i<times.length; i++) {
 		var item = {
 				y: times[i],
-				a: values[i]
+				a: inboundValues[i],
+				b: outboundValues[i]
 		};
 		data[i] = item;
 	}
@@ -98,8 +101,8 @@ function drawImageReportCounts(items) {
 		    element: 'counts',
 		    data: items,
 		    xkey: 'y',
-		    ykeys: ['a'],
-		    labels: ['Counts'],
+		    ykeys: ['a', 'b'],
+		    labels: ['Inbound', 'Outbound'],
 		    lineWidth: 2,
 		    pointSize: 2,
 		    smooth: false,
@@ -117,8 +120,8 @@ function drawImageReportSize(items) {
 		    element: 'size',
 		    data: items,
 		    xkey: 'y',
-		    ykeys: ['a'],
-		    labels: ['Bytes'],
+		    ykeys: ['a', 'b'],
+		    labels: ['Inbound', 'Outbound'],
 		    lineWidth: 2,
 		    pointSize: 2,
 		    smooth: false,
