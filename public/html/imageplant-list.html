@@ -1,8 +1,23 @@
-<div class="container-fluid">
-    <div class="row">
+<div class="container">
+    <div class="row" >
         <div class="col-sm-12 col-md-12 main">
-            <h2 class="sub-header">ImagePlants</h2>
+            <div style="border-bottom:1px solid #ddd">
+            <div class="row" style="position: relative;">
+		        <div class="col-sm-6 col-md-6" >
+                    <div style="margin-bottom: 20px;">
+		              <h3>ImagePlants</h3>
+                    </div>
+		        </div>
+		        <div class="col-sm-6 col-md-6 valign-bottom">
+                    <div class="pull-right" style="margin-bottom: 15px;">
+                        <button type="button" class="btn btn-primary">Create ImagePlant</button>
+                    </div>
+                </div>
+		    </div>
+		    </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12 col-md-12 main">
             <table class="table table-hover">
                 <thead>
@@ -18,7 +33,7 @@
                     <tr>
                         <td>{{imagePlant.name}}</td>
                         <td>{{imagePlant.bucket.name}}</td>
-                        <td>{{imagePlant.creationTime}}</td>
+                        <td>{{imagePlant.creationTime | date:'medium'}}</td>
                         <td>{{imagePlant.numberOfTemplates}}</td>
                         <td>{{imagePlant.numberOfImages}}</td>
                     </tr>

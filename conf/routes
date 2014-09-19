@@ -16,6 +16,7 @@ GET     /image-content.html             controllers.Assets.at(path="/public/html
 GET     /404.html                       controllers.Assets.at(path="/public/html", file="404.html")
 GET     /javascripts/*file              controllers.Assets.at(path="/public/javascripts", file)
 GET     /stylesheets/*file              controllers.Assets.at(path="/public/stylesheets", file)
+GET     /fonts/*file                    controllers.Assets.at(path="/public/fonts", file)
 GET     /images/*file                   controllers.Assets.at(path="/public/images", file)
 
 # REST Endpoints

@@ -39,3 +39,9 @@ div a:hover {
 	padding-top: 15px;
     padding-bottom: 15px;
 }
+
+.valign-bottom {
+    position: absolute;
+    bottom:0;
+    right:0;
+}

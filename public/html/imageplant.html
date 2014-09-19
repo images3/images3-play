@@ -3,19 +3,29 @@
         <div class="col-sm-3 col-md-2 sidebar sidebar-fixed" >
             <ul class="nav nav-sidebar">
                 <li>
-                    <a ui-sref="imageplants">ImagePlants</a>
+                    <a ui-sref="imageplants">
+                        <span class="glyphicon glyphicon-home" style="margin-right: 10px;"></span>Home
+                    </a>
                 </li>
                 <li ng-class="{active: $state.includes('imageplant.overview')}">
-                    <a ui-sref=".overview">Overview</a>
+                    <a ui-sref=".overview">
+                        <span class="glyphicon glyphicon-dashboard" style="margin-right: 10px;"></span>Overview
+                    </a>
                 </li>
                 <li ng-class="{active: $state.includes('imageplant.templates')}">
-                    <a ui-sref=".templates">Templates</a>
+                    <a ui-sref=".templates">
+                        <span class="glyphicon glyphicon-file" style="margin-right: 10px;"></span>Templates
+                    </a>
                 </li>
                 <li ng-class="{active: $state.includes('imageplant.images')}">
-                    <a ui-sref=".images">Images</a>
+                    <a ui-sref=".images">
+                        <span class="glyphicon glyphicon-picture" style="margin-right: 10px;"></span>Images
+                    </a>
                 </li>
                 <li ng-class="{active: $state.includes('imageplant.info')}">
-                    <a ui-sref=".info">Information</a>
+                    <a ui-sref=".info">
+                        <span class="glyphicon glyphicon-cog" style="margin-right: 10px;"></span>Information
+                    </a>
                 </li>
             </ul>
         </div>

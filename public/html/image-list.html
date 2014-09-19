@@ -1,4 +1,5 @@
-<h2 class="page-header">Images</h2>
+<h3 class="page-header">Images</h3>
+<div style="padding-top: 20px;"></div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -19,7 +20,7 @@
             <td>{{image.metadata.format}}</td>
             <td>{{image.metadata.size}}</td>
             <td>{{image.version.templateName}}</td>
-            <td>{{image.dateTime}}</td>
+            <td>{{image.dateTime | date:'medium'}}</td>
             <div ui-view></div>
         </tr>
     </tbody>
