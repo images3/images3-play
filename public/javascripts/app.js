@@ -22,58 +22,69 @@ imageS3.run(['$rootScope', '$state', '$stateParams',
 			} else {
 				authRefreshImageReport = false;
 			}
-			console.log(authRefreshImageReport);
+			//console.log(authRefreshImageReport);
 		});
 	}
 ]);
 
 imageS3.config(['$stateProvider', '$urlRouterProvider', 
     function($stateProvider, $urlRouterProvider) {
-		$urlRouterProvider.otherwise('/imageplant-list');
+		$urlRouterProvider.otherwise('/imageplants');
 		
 		$stateProvider
 			.state('imageplants', {
-				url: '/imageplant-list',
-				templateUrl: 'imageplant-list.html',
-				controller: 'ImagePlantListController'
+				url: '/imageplants',
+				templateUrl: 'html/imageplant-list.html',
+				controller: 'ImagePlantController'
+			})
+			.state('imageplant-create', {
+				url: '/imageplant-create',
+				templateUrl: 'html/imageplant-create.html',
+				controller: 'ImagePlantController'
 			})
 			.state('imageplant', {
-				url: '/imageplant/:imagePlantId',
-				templateUrl: 'imageplant.html',
+				url: '/imageplants/:imagePlantId',
+				templateUrl: 'html/imageplant.html',
 				controller: 'ImagePlantController'
 			})
 			.state('imageplant.overview', {
 				url: '/overview',
 				views: {
 					'': {
-						templateUrl: 'imageplant-overview.html',
+						templateUrl: 'html/imageplant-overview.html',
 						controller: 'ImagePlantController'
 					},
 					'report@imageplant.overview': {
-						templateUrl: 'image-report.html',
+						templateUrl: 'html/image-report.html',
 						controller: 'ImageReportController'
 					}
 				}
 			})
 			.state('imageplant.templates', {
 				url: '/templates',
-				templateUrl: 'template-list.html',
-				controller: 'TemplateListController'
+				templateUrl: 'html/template-list.html',
+				controller: 'TemplateController'
+			})
+			.state('imageplant.templates-create', {
+				url: '/template-create',
+				templateUrl: 'html/template-create.html',
+				controller: 'TemplateController'
 			})
 			.state('imageplant.images', {
 				url: '/images',
-				templateUrl: 'image-list.html',
+				templateUrl: 'html/image-list.html',
 				controller: 'ImageListController'
 			})
 			.state('imageplant.images.imagecontent', {
 				url: '/:imageId/imagecontent',
-				templateUrl: 'image-content.html',
+				templateUrl: 'html/image-content.html',
 				controller: 'ImageContentController'
 			})
 			.state('imageplant.info', {
 				url: '/info',
-				templateUrl: 'imageplant-info.html',
-				controller: 'ImagePlantController'
+				templateUrl: 'html/imageplant-info.html',
+				controller: 'ImagePlantController',
+				
 			});
 	}
 ]);

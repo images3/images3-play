@@ -1,0 +1,74 @@
+<div class="container" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 main" >
+           <form class="form-horizontal" role="form">
+	            <div class="form-group">
+                    <label for="inputName" class="col-sm-3 control-label">Name</label>
+				    <div class="col-sm-6">
+                        <input ng-model="imagePlant.name" type="text" class="form-control" id="inputName" placeholder="ImagePlant Name">
+				    </div>
+                </div>
+                <div style="height:20px;"></div>
+                <div class="form-group">
+                    <label for="inputBucketName" class="col-sm-3 control-label">S3 Bucket</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.bucket.name" type="text" class="form-control" id="inputBucketName" placeholder="Amazon S3 Bucket Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAccessKey" class="col-sm-3 control-label">API Key</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.bucket.accessKey" type="text" class="form-control" id="inputAccessKey" placeholder="Amazon API Key">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSecretKey" class="col-sm-3 control-label">API Secret</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.bucket.secretKey" type="text" class="form-control" id="inputSecretKey" placeholder="Amazon API Secret">
+                    </div>
+                </div>
+                <div style="height:20px;"></div>
+                <div class="form-group">
+                    <label for="inputResizingUnit" class="col-sm-3 control-label">Resizing Unit</label>
+                    <div class="col-sm-3">
+                        <select ng-init="imagePlant.resizingConfig.unit = 'PIXCEL'" ng-model="imagePlant.resizingConfig.unit" class="form-control" id="inputResizingUnit">
+                            <option value="PIXCEL">PIXCELS</option>
+                            <option value="PERCENT">PERCENT</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputResizingWidth" class="col-sm-3 control-label">Width</label>
+                    <div class="col-sm-3">
+                        <input ng-model="imagePlant.resizingConfig.width" type="number" class="form-control" id="inputResizingWidth" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputResizingHeight" class="col-sm-3 control-label">Height</label>
+                    <div class="col-sm-3">
+                        <input ng-model="imagePlant.resizingConfig.height" type="number" class="form-control" id="inputResizingHeight" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <div class="checkbox">
+                            <label>
+                                <input ng-model="imagePlant.resizingConfig.isKeepProportions" type="checkbox"> Keep Proportions
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div style="height:20px;"></div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-2">
+                        <button ng-click="$state.go('imageplants', {});" class="btn btn-default">Cancel</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button ng-click="createImagePlant(imagePlant)" type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </form>
+            <pre>info = {{imagePlant | json}}</pre>
+        </div>
+    </div>
+</div>

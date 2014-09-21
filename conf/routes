@@ -4,16 +4,8 @@
 
 # HTML
 GET     /                               controllers.Assets.at(path="/public/html", file="index.html")
-GET     /index.html                     controllers.Assets.at(path="/public/html", file="index.html")
-GET     /imageplant-list.html           controllers.Assets.at(path="/public/html", file="imageplant-list.html")
-GET     /imageplant.html                controllers.Assets.at(path="/public/html", file="imageplant.html")
-GET     /imageplant-overview.html       controllers.Assets.at(path="/public/html", file="imageplant-overview.html")
-GET     /imageplant-info.html           controllers.Assets.at(path="/public/html", file="imageplant-info.html")
-GET     /image-report.html              controllers.Assets.at(path="/public/html", file="image-report.html")
-GET     /template-list.html             controllers.Assets.at(path="/public/html", file="template-list.html")
-GET     /image-list.html                controllers.Assets.at(path="/public/html", file="image-list.html")
-GET     /image-content.html             controllers.Assets.at(path="/public/html", file="image-content.html")
 GET     /404.html                       controllers.Assets.at(path="/public/html", file="404.html")
+GET     /html/*file                     controllers.Assets.at(path="/public/html", file)
 GET     /javascripts/*file              controllers.Assets.at(path="/public/javascripts", file)
 GET     /stylesheets/*file              controllers.Assets.at(path="/public/stylesheets", file)
 GET     /fonts/*file                    controllers.Assets.at(path="/public/fonts", file)

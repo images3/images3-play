@@ -4,33 +4,55 @@
 
 var imageS3Controllers = angular.module('imageS3Controllers', ['imageS3Services']);
 
-imageS3Controllers.controller('ImagePlantListController', ['$scope', '$state', 'ImagePlants', 
-    function ($scope, $state, ImagePlants) {
-		ImagePlants.getAll({cursor: null}, function(response) {
-			//console.log('HERE======>' + JSON.stringify(response));
-			$scope.imagePlants = response.results;
-		
-			$scope.viewImagePlant = function(imagePlant) {
-				$state.go('imageplant.overview',{imagePlantId: imagePlant.id});
-			}
-	})}
-
-]);
-
 imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$stateParams', 'ImagePlants', 
     function ($scope, $state, $stateParams, ImagePlants) {
-		ImagePlants.getById({id: $stateParams.imagePlantId}, function(response) {
-			//console.log('HERE======>' + JSON.stringify(response));
-			$scope.imagePlant = response;
-	})}
+	
+		$scope.imagePlant = {};
+	
+		$scope.viewImagePlant = function(imagePlant) {
+			$state.go('imageplant.overview',{imagePlantId: imagePlant.id});
+		}
+		
+		$scope.showImagePlants = function() {
+			ImagePlants.getAll({cursor: null}, function(response) {
+				//console.log('HERE======>' + JSON.stringify(response));
+				$scope.imagePlants = response.results;
+			})
+		}
+	
+		$scope.showImagePlant = function() {
+			ImagePlants.getById({id: $stateParams.imagePlantId}, function(response) {
+				$scope.imagePlant = response;
+			})
+		}
+		
+		$scope.createImagePlant = function(imagePlant) {
+			console.log('HERE======>' + angular.toJson(imagePlant, true));
+			ImagePlants.create(imagePlant, function(response) {
+				$state.go('imageplants', {});
+			})
+		}
+	}
 ]);
 
-imageS3Controllers.controller('TemplateListController', ['$scope', '$state', '$stateParams', 'Templates', 
+imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$stateParams', 'Templates',
     function ($scope, $state, $stateParams, Templates) {
-		Templates.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
-		//console.log('HERE======>' + JSON.stringify(response));
-		$scope.templates = response.results;
-	})}
+	
+		$scope.template = {};
+	
+		$scope.createTemplate = function (template) {
+			console.log('HERE======>' + angular.toJson(template, true));
+			template.id.imagePlantId = $stateParams.imagePlantId;
+			console.log('HERE======>' + angular.toJson(template, true));
+			//TODO: create template 
+		}
+
+	    $scope.showTemplates = function () {
+			Templates.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
+				$scope.templates = response.results;
+			})
+		}
+	}
 ]);
 
 imageS3Controllers.controller('ImageListController', ['$scope', '$state', '$stateParams', 'Images', 
@@ -52,8 +74,10 @@ imageS3Controllers.controller('ImageContentController', ['$scope', '$state', '$s
 	}
 ]);
 
-imageS3Controllers.controller('ImageReportController', ['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'ImagePlants',
+imageS3Controllers.controller('ImageReportController', 
+		['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'ImagePlants',
     function ($rootScope, $scope, $state, $stateParams, $timeout, ImagePlants) {
+		console.log('HERE======>ImagePlantId: ' + $stateParams.imagePlantId);
 		var start = new Date().getTime() - (10 * 60 * 1000); //back 10 mins
 		var refreshRate = 10 * 1000; //milliseconds
 		(function tick() {

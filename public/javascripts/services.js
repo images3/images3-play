@@ -30,7 +30,10 @@ imageS3Services.factory('ImagePlants', ['$resource', function($resource) {
 							timeUnit: '@timeUnit',
 							types: '@types'
 							},
-						isArray: false}
+						isArray: false},
+				create: {
+						url: '/rest/v1/imageplants',
+						method: 'POST'}
 			});
 }]);
 

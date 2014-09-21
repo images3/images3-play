@@ -1,26 +1,48 @@
-<h3 class="page-header">Templates</h3>
-<div style="padding-top: 20px;"></div>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Width</th>
-            <th>Height</th>
-            <th>Unit</th>
-            <th>Keep Proportions</th>
-            <th>Archived</th>
-            <th>Removable</th>
-        </tr>
-    </thead>
-    <tbody ng-repeat="template in templates">
-        <tr>
-            <td>{{template.id.templateName}}</td>
-            <td>{{template.resizingConfig.width}}</td>
-            <td>{{template.resizingConfig.height}}</td>
-            <td>{{template.resizingConfig.unit}}</td>
-            <td>{{template.resizingConfig.isKeepProportions}}</td>
-            <td>{{template.isArchived}}</td>
-            <td>{{template.isRemovable}}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="container-fluid" ng-init="showTemplates()">
+    <div class="row" >
+        <div class="col-sm-12 col-md-12 main">
+            <div style="border-bottom:1px solid #ddd">
+            <div class="row" style="position: relative;">
+                <div class="col-sm-6 col-md-6" >
+                    <div style="margin-bottom: 20px;">
+                      <h3>Templates</h3>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 valign-bottom">
+                    <div class="pull-right" style="margin-bottom: 15px;">
+                        <button type="button" class="btn btn-primary" ng-click="$state.go('imageplant.templates-create', {})">Create Template</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-12 col-md-12 main">
+			<table class="table table-hover">
+			    <thead>
+			        <tr>
+			            <th>Name</th>
+			            <th>Width</th>
+			            <th>Height</th>
+			            <th>Unit</th>
+			            <th>Keep Proportions</th>
+			            <th>Archived</th>
+			            <th>Removable</th>
+			        </tr>
+			    </thead>
+			    <tbody ng-repeat="template in templates">
+			        <tr>
+			            <td>{{template.id.templateName}}</td>
+			            <td>{{template.resizingConfig.width}}</td>
+			            <td>{{template.resizingConfig.height}}</td>
+			            <td>{{template.resizingConfig.unit}}</td>
+			            <td>{{template.resizingConfig.isKeepProportions}}</td>
+			            <td>{{template.isArchived}}</td>
+			            <td>{{template.isRemovable}}</td>
+			        </tr>
+			    </tbody>
+			</table>
+        </div>
+    </div>
+</div>
