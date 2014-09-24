@@ -33,7 +33,19 @@ imageS3Services.factory('ImagePlants', ['$resource', function($resource) {
 						isArray: false},
 				create: {
 						url: '/rest/v1/imageplants',
-						method: 'POST'}
+						method: 'POST'},
+				remove: {
+						url: '/rest/v1/imageplants/:imagePlantId',
+						method: 'DELETE',
+						params:{
+							imagePlantId: '@imagePlantId'
+						}},
+				update: {
+					url: '/rest/v1/imageplants/:imagePlantId',
+					method: 'PUT',
+					params:{
+						imagePlantId: '@imagePlantId'
+						}},
 			});
 }]);
 
@@ -46,7 +58,37 @@ imageS3Services.factory('Templates', ['$resource', function($resource) {
 						url: '/rest/v1/imageplants/:id/templates',
 						method: 'GET',
 						params:{id: '@id'},
-						isArray: false}
+						isArray: false},
+				getByName: {
+					url: '/rest/v1/imageplants/:id/templates/:name',
+					method: 'GET',
+					params:{
+						id: '@id',
+						name: '@name'
+							},
+					isArray: false},
+				create: {
+					url: '/rest/v1/imageplants/:imagePlantId/templates/:templateName',
+					method: 'POST',
+					params:{
+						imagePlantId: '@imagePlantId', 
+						templateName: '@templateName'
+						}},
+				remove: {
+					url: '/rest/v1/imageplants/:imagePlantId/templates/:templateName',
+					method: 'DELETE',
+					params:{
+						imagePlantId: '@imagePlantId', 
+						templateName: '@templateName'
+						}},
+				update: {
+					url: '/rest/v1/imageplants/:imagePlantId/templates/:templateName',
+					method: 'PUT',
+					params:{
+						imagePlantId: '@imagePlantId', 
+						templateName: '@templateName'
+						}},
+								
 			});
 }]);
 

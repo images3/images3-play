@@ -1,11 +1,11 @@
-<div class="container-fluid">
+<div class="container-fluid"  ng-init="showTemplate()">
     <div class="row" >
         <div class="col-sm-12 col-md-12 main">
             <div style="border-bottom:1px solid #ddd">
                 <div class="row" style="position: relative;">
                     <div class="col-sm-6 col-md-6" >
                         <div style="margin-bottom: 20px;">
-                          <h3>Create Template</h3>
+                          <h3>Template</h3>
                         </div>
                     </div>
                 </div>
@@ -18,48 +18,45 @@
 	            <div class="form-group">
                     <label for="inputName" class="col-sm-3 control-label">Name</label>
 				    <div class="col-sm-6">
-                        <input ng-model="template.id.templateName" type="text" class="form-control" id="inputName" placeholder="Template Name">
+				        <p class="form-control-static">{{template.id.templateName}}</p>
 				    </div>
                 </div>
                 <div class="form-group">
                     <label for="inputResizingUnit" class="col-sm-3 control-label">Resizing Unit</label>
                     <div class="col-sm-3">
-                        <select ng-model="template.resizingConfig.unit" class="form-control" id="inputResizingUnit">
-                            <option value="PIXEL">PIXELS</option>
-                            <option value="PERCENT">PERCENT</option>
-                        </select>
+                        <p class="form-control-static">{{template.resizingConfig.unit}}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputResizingWidth" class="col-sm-3 control-label">Width</label>
                     <div class="col-sm-3">
-                        <input ng-model="template.resizingConfig.width" type="number" class="form-control" id="inputResizingWidth" placeholder="">
+                        <p class="form-control-static">{{template.resizingConfig.width}}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputResizingHeight" class="col-sm-3 control-label">Height</label>
                     <div class="col-sm-3">
-                        <input ng-model="template.resizingConfig.height" type="number" class="form-control" id="inputResizingHeight" placeholder="">
+                        <p class="form-control-static">{{template.resizingConfig.height}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-6">
-                        <div class="checkbox">
-                            <label>
-                                <input ng-model="template.resizingConfig.isKeepProportions" type="checkbox"> Keep Proportions
-                            </label>
-                        </div>
+                    <label for="inputResizingHeight" class="col-sm-3 control-label">Keep Proportions</label>
+                    <div class="col-sm-6">
+                        <p class="form-control-static">{{template.resizingConfig.isKeepProportions}}</p>
                     </div>
                 </div>
                 <div style="height:20px;"></div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-2">
-	                    <button ng-click="$state.go('imageplant.templates', {});" class="btn btn-default">Back</button>
-	                </div>
-                    <div class="col-sm-2">
-                        <button ng-click="createTemplate(template)" type="submit" class="btn btn-primary">Create</button>
+                        <button ng-click="$state.go('imageplant.templates', {});" class="btn btn-default">Back</button>
                     </div>
-                </div>
+                    <div class="col-sm-2">
+                        <button ng-click="updateTemplateAvailability(template)" type="submit" class="btn btn-primary">{{template.isArchived ? 'Active' : 'Deactive'}}</button>
+                    </div>
+	                <div class="col-sm-2">
+                        <button ng-click="removeTemplate(template)" type="submit" class="btn btn-danger" ng-disabled="!template.isRemovable">Remove</button>
+                    </div>
+	            </div>
             </form>
         </div>
     </div>

@@ -7,10 +7,10 @@ var imageS3Controllers = angular.module('imageS3Controllers', ['imageS3Services'
 imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$stateParams', 'ImagePlants', 
     function ($scope, $state, $stateParams, ImagePlants) {
 	
-		$scope.imagePlant = {};
+		$scope.imagePlant = initialImagePlant($stateParams.imagePlantId);
 	
 		$scope.viewImagePlant = function(imagePlant) {
-			$state.go('imageplant.overview',{imagePlantId: imagePlant.id});
+			$state.go('imageplant.overview', {imagePlantId: imagePlant.id});
 		}
 		
 		$scope.showImagePlants = function() {
@@ -32,19 +32,52 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 				$state.go('imageplants', {});
 			})
 		}
+		
+		$scope.removeImagePlant = function(imagePlant) {
+	    	console.log('HERE======>' + angular.toJson(imagePlant, true));
+	    	ImagePlants.remove({imagePlantId: imagePlant.id}, 
+					function(response) {
+	    		$state.go('imageplants', {});
+			})
+		}
+		
+		$scope.updateImagePlant = function(imagePlant) {
+			var updateImagePlant = {};
+			updateImagePlant.id = imagePlant.id;
+			updateImagePlant.name = imagePlant.name;
+			updateImagePlant.bucket = imagePlant.bucket;
+	    	console.log('HERE======>' + angular.toJson(updateImagePlant, true));
+	    	ImagePlants.update({imagePlantId: imagePlant.id}, updateImagePlant,
+					function(response) {
+	    		$state.go('imageplant.info', {imagePlantId: imagePlant.id});
+			})
+		}
+		
 	}
 ]);
 
 imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$stateParams', 'Templates',
     function ($scope, $state, $stateParams, Templates) {
 	
-		$scope.template = {};
+		$scope.template = initialTemplate($stateParams.imagePlantId);
 	
 		$scope.createTemplate = function (template) {
 			console.log('HERE======>' + angular.toJson(template, true));
-			template.id.imagePlantId = $stateParams.imagePlantId;
-			console.log('HERE======>' + angular.toJson(template, true));
-			//TODO: create template 
+			Templates.create(
+					{imagePlantId: $stateParams.imagePlantId,
+						templateName: template.id.templateName},
+					template.resizingConfig,
+					function(response) {
+						$state.go('imageplant.templates', {});
+					});
+		}
+		
+		$scope.showTemplate = function() {
+			console.log('HERE======>' + angular.toJson($stateParams, true));
+			Templates.getByName({id: $stateParams.imagePlantId, name: $stateParams.templateName}, 
+					function(response) {
+				$scope.template = response;
+			})
 		}
 
 	    $scope.showTemplates = function () {
@@ -52,6 +85,39 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 				$scope.templates = response.results;
 			})
 		}
+	    
+	    $scope.viewTemplate = function(template) {
+	    	console.log('HERE======>' + angular.toJson(template, true));
+			$state.go('imageplant.template-update', {templateName: template.id.templateName});
+		}
+	    
+	    $scope.removeTemplate = function(template) {
+	    	console.log('HERE======>' + angular.toJson(template, true));
+	    	Templates.remove({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
+					function(response) {
+			    		$state.go('imageplant.templates', {});
+					}
+	    	)
+		}
+	    
+	    $scope.updateTemplateAvailability = function(template) {
+	    	var isArchived = template.isArchived;
+	    	if (template.isArchived) {
+	    		template.isArchived = false;
+	    	} else {
+	    		template.isArchived = true;
+	    	}
+	    	Templates.update({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
+	    			template,
+					function(data) {
+			    		$state.go('imageplant.template-update', {templateName: template.id.templateName});
+					},
+					function(error) {
+						template.isArchived = isArchived;
+					}
+	    	)
+		}
+	    
 	}
 ]);
 

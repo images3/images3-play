@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.images3.ImageS3;
 import com.images3.TemplateAddRequest;
+import com.images3.common.ResizingConfig;
 import com.images3.common.TemplateIdentity;
 import com.images3.TemplateResponse;
 import com.images3.TemplateUpdateRequest;
@@ -28,11 +29,11 @@ public class TemplateResource extends Controller {
     }
     
     public Result addTemplate(String imagePlantId, String name) throws IOException {
-        TemplateAddRequest request = objectMapper.readValue(
-                request().body().asJson().toString(), TemplateAddRequest.class);
-        request = new TemplateAddRequest(
+        ResizingConfig resizingConfig = objectMapper.readValue(
+                request().body().asJson().toString(), ResizingConfig.class);
+        TemplateAddRequest request = new TemplateAddRequest(
                 new TemplateIdentity(imagePlantId, name),
-                request.getResizingConfig()
+                resizingConfig
                 );
         TemplateResponse response = imageS3.addTemplate(request);
         String respJson = objectMapper.writeValueAsString(response);

@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-sm-6 col-md-6 valign-bottom">
                     <div class="pull-right" style="margin-bottom: 15px;">
-                        <button type="button" class="btn btn-primary" ng-click="$state.go('imageplant.templates-create', {})">Create Template</button>
+                        <button type="button" class="btn btn-primary" ng-click="$state.go('imageplant.template-create', {})">Create Template</button>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
 			            <th>Removable</th>
 			        </tr>
 			    </thead>
-			    <tbody ng-repeat="template in templates">
+			    <tbody ng-repeat="template in templates" ng-click="viewTemplate(template)">
 			        <tr>
 			            <td>{{template.id.templateName}}</td>
 			            <td>{{template.resizingConfig.width}}</td>

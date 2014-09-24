@@ -1,6 +1,19 @@
 <div class="container" style="padding-top: 20px;">
+    <div class="row" >
+        <div class="col-sm-12 col-md-12 main">
+            <div style="border-bottom:1px solid #ddd">
+	            <div class="row" style="position: relative;">
+	                <div class="col-sm-6 col-md-6" >
+	                    <div style="margin-bottom: 20px;">
+	                      <h3>Create ImagePlant</h3>
+	                    </div>
+	                </div>
+	            </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-sm-6 col-sm-offset-3 col-md-8 col-md-offset-2 main" >
+        <div class="col-sm-6 col-md-8 main" >
            <form class="form-horizontal" role="form">
 	            <div class="form-group">
                     <label for="inputName" class="col-sm-3 control-label">Name</label>
@@ -29,22 +42,22 @@
                 </div>
                 <div style="height:20px;"></div>
                 <div class="form-group">
-                    <label for="inputResizingUnit" class="col-sm-3 control-label">Resizing Unit</label>
+                    <label for="inputResizingUnit" class="col-sm-3 control-label">Image Size Unit</label>
                     <div class="col-sm-3">
-                        <select ng-init="imagePlant.resizingConfig.unit = 'PIXCEL'" ng-model="imagePlant.resizingConfig.unit" class="form-control" id="inputResizingUnit">
-                            <option value="PIXCEL">PIXCELS</option>
+                        <select ng-model="imagePlant.resizingConfig.unit" class="form-control" id="inputResizingUnit">
+                            <option value="PIXEL">PIXELS</option>
                             <option value="PERCENT">PERCENT</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputResizingWidth" class="col-sm-3 control-label">Width</label>
+                    <label for="inputResizingWidth" class="col-sm-3 control-label">Image Width</label>
                     <div class="col-sm-3">
                         <input ng-model="imagePlant.resizingConfig.width" type="number" class="form-control" id="inputResizingWidth" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputResizingHeight" class="col-sm-3 control-label">Height</label>
+                    <label for="inputResizingHeight" class="col-sm-3 control-label">Image Height</label>
                     <div class="col-sm-3">
                         <input ng-model="imagePlant.resizingConfig.height" type="number" class="form-control" id="inputResizingHeight" placeholder="">
                     </div>
@@ -68,7 +81,7 @@
                     </div>
                 </div>
             </form>
-            <pre>info = {{imagePlant | json}}</pre>
+            <!-- <pre>info = {{imagePlant | json}}</pre>  -->
         </div>
     </div>
 </div>

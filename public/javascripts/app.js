@@ -65,9 +65,14 @@ imageS3.config(['$stateProvider', '$urlRouterProvider',
 				templateUrl: 'html/template-list.html',
 				controller: 'TemplateController'
 			})
-			.state('imageplant.templates-create', {
+			.state('imageplant.template-create', {
 				url: '/template-create',
 				templateUrl: 'html/template-create.html',
+				controller: 'TemplateController'
+			})
+			.state('imageplant.template-update', {
+				url: '/template-update/:templateName',
+				templateUrl: 'html/template-update.html',
 				controller: 'TemplateController'
 			})
 			.state('imageplant.images', {

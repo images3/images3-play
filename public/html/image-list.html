@@ -1,27 +1,44 @@
-<h3 class="page-header">Images</h3>
-<div style="padding-top: 20px;"></div>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Width</th>
-            <th>Height</th>
-            <th>Format</th>
-            <th>Size (bytes)</th>
-            <th>Version</th>
-            <th>Uploaded Time</th>
-        </tr>
-    </thead>
-    <tbody ng-repeat="image in images" ng-click="viewImageContent(image)">
-        <tr data-toggle="modal" data-target="#myModal">
-            <td>{{image.id.imageId}}</td>
-            <td>{{image.metadata.dimension.width}}px</td>
-            <td>{{image.metadata.dimension.height}}px</td>
-            <td>{{image.metadata.format}}</td>
-            <td>{{image.metadata.size}}</td>
-            <td>{{image.version.templateName}}</td>
-            <td>{{image.dateTime | date:'medium'}}</td>
-            <div ui-view></div>
-        </tr>
-    </tbody>
-</table>
+<div class="container-fluid">
+    <div class="row" >
+        <div class="col-sm-12 col-md-12 main">
+            <div style="border-bottom:1px solid #ddd">
+                <div class="row" style="position: relative;">
+                    <div class="col-sm-6 col-md-6" >
+                        <div style="margin-bottom: 20px;">
+                          <h3>Overview</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 main">
+            <table class="table table-hover">
+			    <thead>
+			        <tr>
+			            <th>Id</th>
+			            <th>Width</th>
+			            <th>Height</th>
+			            <th>Format</th>
+			            <th>Size (bytes)</th>
+			            <th>Version</th>
+			            <th>Uploaded Time</th>
+			        </tr>
+			    </thead>
+			    <tbody ng-repeat="image in images" ng-click="viewImageContent(image)">
+			        <tr data-toggle="modal" data-target="#myModal">
+			            <td>{{image.id.imageId}}</td>
+			            <td>{{image.metadata.dimension.width}}px</td>
+			            <td>{{image.metadata.dimension.height}}px</td>
+			            <td>{{image.metadata.format}}</td>
+			            <td>{{image.metadata.size}}</td>
+			            <td>{{image.version.templateName}}</td>
+			            <td>{{image.dateTime | date:'medium'}}</td>
+			            <div ui-view></div>
+			        </tr>
+			    </tbody>
+			</table>
+        </div>
+    </div>
+</div>

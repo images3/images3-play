@@ -1,56 +1,79 @@
-<h3 class="page-header">Information</h3>
-<div class="container-fluid" style="padding-top: 20px;" ng-init="showImagePlant()">
-    <div class="row">
-        <div class="col-sm-5 col-md-7">
-            <div class="panel panel-default">
-                <div class="panel-heading">ImagePlant Profile</div>
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td style="width: 160px;"><strong>Id:</strong></td>
-                            <td>{{imagePlant.id}}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Name:</strong></td>
-                            <td>{{imagePlant.name}}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Bucket:</strong></td>
-                            <td>{{imagePlant.bucket.name}}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Created Time:</strong></td>
-                            <td>{{imagePlant.creationTime | date:'medium'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div style="padding-top: 20px;"></div>
-            <div class="panel panel-default">
-                <div class="panel-heading">Master Template</div>
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td style="width: 160px;"><strong>Width:</strong></td>
-                            <td>{{imagePlant.masterTemplate.resizingConfig.width}}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Height:</strong></td>
-                            <td>{{imagePlant.masterTemplate.resizingConfig.height}}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Unit:</strong></td>
-                            <td>{{imagePlant.masterTemplate.resizingConfig.unit}}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Keep Proportions:</strong></td>
-                            <td>{{imagePlant.masterTemplate.resizingConfig.isKeepProportions}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="container-fluid" ng-init="showImagePlant()">
+    <div class="row" >
+        <div class="col-sm-12 col-md-12 main">
+            <div style="border-bottom:1px solid #ddd">
+                <div class="row" style="position: relative;">
+                    <div class="col-sm-6 col-md-6" >
+                        <div style="margin-bottom: 20px;">
+                          <h3>Information</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-8 main" >
+           <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="inputName" class="col-sm-3 control-label">Id</label>
+                    <div class="col-sm-6">
+                        <p class="form-control-static">{{imagePlant.id}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputResizingUnit" class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.name" type="text" class="form-control" id="inputName" placeholder="ImagePlant Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputResizingUnit" class="col-sm-3 control-label">Created Time</label>
+                    <div class="col-sm-6">
+                        <p class="form-control-static">{{imagePlant.creationTime | date:'medium'}}</p>
+                    </div>
+                </div>
+                <div style="height:20px;"></div>
+                <div class="form-group">
+                    <label for="inputBucketName" class="col-sm-3 control-label">S3 Bucket</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.bucket.name" type="text" class="form-control" id="inputBucketName" placeholder="Amazon S3 Bucket Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAccessKey" class="col-sm-3 control-label">API Key</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.bucket.accessKey" type="text" class="form-control" id="inputAccessKey" placeholder="Amazon API Key">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSecretKey" class="col-sm-3 control-label">API Secret</label>
+                    <div class="col-sm-6">
+                        <input ng-model="imagePlant.bucket.secretKey" type="text" class="form-control" id="inputSecretKey" placeholder="Amazon API Secret">
+                    </div>
+                </div>
+                <div style="height:20px;"></div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-2">
+                        <button ng-click="updateImagePlant(imagePlant)" type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div style="height:40px;"></div>
+    <div class="row" >
+        <div class="col-sm-6 col-md-7 main">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span class="label label-danger">WARNING</span>
+                    <h6>Removing this image plant will remove all associated images and template completely! There is no way to undo this, so proceed with caution.</h6>
+                    <div class="pull-right" style="margin-bottom: -15px;">
+                        <button ng-click="removeImagePlant(imagePlant)" type="button" class="btn btn-link"><h6>Remove</h6></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
