@@ -69,7 +69,11 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 					template.resizingConfig,
 					function(response) {
 						$state.go('imageplant.templates', {});
-					});
+					},
+					function(error) {
+						console.log('HERE======>error: ' + angular.toJson(error, true));
+					}
+			);
 		}
 		
 		$scope.showTemplate = function() {

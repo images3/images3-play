@@ -5,8 +5,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.images3.common.DuplicateTemplateNameException;
-import com.images3.common.DuplicatedImagePlantNameException;
 import com.images3.ImageS3;
+import com.images3.common.DuplicateImagePlantNameException;
 import com.images3.common.NoSuchEntityFoundException;
 import com.images3.common.UnremovableTemplateException;
 
@@ -49,9 +49,9 @@ public class Global extends GlobalSettings {
     }
     
     public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-        if (DuplicatedImagePlantNameException.class.isInstance(t.getCause())) {
-            DuplicatedImagePlantNameException exception =
-                    (DuplicatedImagePlantNameException) t.getCause();
+        if (DuplicateImagePlantNameException.class.isInstance(t.getCause())) {
+            DuplicateImagePlantNameException exception =
+                    (DuplicateImagePlantNameException) t.getCause();
             String message = "ImagePlant name, \'" + exception.getName() + "\' has been taken.";
             return Promise.<Result>pure(Results.badRequest(message));
         }
@@ -63,7 +63,7 @@ public class Global extends GlobalSettings {
         if (NoSuchEntityFoundException.class.isInstance(t.getCause())) {
             NoSuchEntityFoundException exception =
                     (NoSuchEntityFoundException) t.getCause();
-            String message = "No such " + exception.getName() + " {" + exception.getId() + "} found.";
+            String message = "No such " + exception.getEntity() + " {" + exception.getId() + "} found.";
             return Promise.<Result>pure(Results.notFound(message));
         }
         if (UnremovableTemplateException.class.isInstance(t.getCause())) {
@@ -78,8 +78,8 @@ public class Global extends GlobalSettings {
         return Promise.<Result>pure(Results.internalServerError());
     }
     
-    public Promise<Result> onHandlerNotFound(Http.RequestHeader request) {
-        return Promise.<Result>pure(Results.redirect("/404.html"));
-    }
+    //public Promise<Result> onHandlerNotFound(Http.RequestHeader request) {
+        //return Promise.<Result>pure(Results.notFound("/404.html"));
+    //}
     
 }
