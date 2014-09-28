@@ -15,12 +15,16 @@
     <div class="row">
         <div class="col-sm-6 col-md-8 main" >
            <form class="form-horizontal" role="form">
-	            <div class="form-group">
+	            <div class="form-group  {{(errorCode==400103 || errorCode==400106 || errorCode==400107) ? 'has-error' : ''}}">
                     <label for="inputName" class="col-sm-3 control-label">Name</label>
 				    <div class="col-sm-6">
                         <input ng-model="template.id.templateName" type="text" class="form-control" id="inputName" placeholder="Template Name">
 				    </div>
+				    <div class="col-sm-offset-3 col-sm-12 {{(errorCode==400103 || errorCode==400106 || errorCode==400107) ? 'hide' : ''}}">
+                        <span class="help-block">{{errorMessage}}</span>
+                    </div>
                 </div>
+                <div style="height:20px;"></div>
                 <div class="form-group">
                     <label for="inputResizingUnit" class="col-sm-3 control-label">Resizing Unit</label>
                     <div class="col-sm-3">
@@ -30,16 +34,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400105 ? 'has-error' : ''}}">
                     <label for="inputResizingWidth" class="col-sm-3 control-label">Width</label>
                     <div class="col-sm-3">
                         <input ng-model="template.resizingConfig.width" type="number" class="form-control" id="inputResizingWidth" placeholder="">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400105 ? 'has-error' : ''}}">
                     <label for="inputResizingHeight" class="col-sm-3 control-label">Height</label>
                     <div class="col-sm-3">
                         <input ng-model="template.resizingConfig.height" type="number" class="form-control" id="inputResizingHeight" placeholder="">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-12 {{errorCode!=400105 ? 'hide' : ''}}">
+                        <span class="help-block">{{errorMessage}}</span>
                     </div>
                 </div>
                 <div class="form-group">

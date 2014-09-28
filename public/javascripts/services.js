@@ -89,7 +89,11 @@ imageS3Services.factory('Templates', ['$resource', function($resource) {
 						templateName: '@templateName'
 						}},
 								
-			});
+			},
+			{
+		        stripTrailingSlashes: false
+		    }
+			);
 }]);
 
 imageS3Services.factory('Images', ['$resource', function($resource) {

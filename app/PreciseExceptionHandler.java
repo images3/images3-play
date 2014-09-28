@@ -1,5 +1,3 @@
-import com.images3.exceptions.DuplicateImagePlantNameException;
-
 
 public abstract class PreciseExceptionHandler extends ExceptionHandler {
 

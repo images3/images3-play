@@ -21,10 +21,13 @@
                         <p class="form-control-static">{{imagePlant.id}}</p>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{(errorCode==400104 || errorCode==400101) ? 'has-error' : ''}}">
                     <label for="inputResizingUnit" class="col-sm-3 control-label">Name</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.name" type="text" class="form-control" id="inputName" placeholder="ImagePlant Name">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-12 {{(errorCode!=400104 || errorCode==400101) ? 'hide' : ''}}">
+                        <span class="help-block">{{errorMessage}}</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -34,22 +37,25 @@
                     </div>
                 </div>
                 <div style="height:20px;"></div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputBucketName" class="col-sm-3 control-label">S3 Bucket</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.bucket.name" type="text" class="form-control" id="inputBucketName" placeholder="Amazon S3 Bucket Name">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputAccessKey" class="col-sm-3 control-label">API Key</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.bucket.accessKey" type="text" class="form-control" id="inputAccessKey" placeholder="Amazon API Key">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputSecretKey" class="col-sm-3 control-label">API Secret</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.bucket.secretKey" type="text" class="form-control" id="inputSecretKey" placeholder="Amazon API Secret">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-12 {{errorCode!=400110 ? 'hide' : ''}}">
+                        <span class="help-block">{{errorMessage}}</span>
                     </div>
                 </div>
                 <div style="height:20px;"></div>

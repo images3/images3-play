@@ -8,6 +8,8 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
     function ($scope, $state, $stateParams, ImagePlants) {
 	
 		$scope.imagePlant = initialImagePlant($stateParams.imagePlantId);
+		$scope.errorCode = 0;
+		$scope.errorMessage = '';
 	
 		$scope.viewImagePlant = function(imagePlant) {
 			$state.go('imageplant.overview', {imagePlantId: imagePlant.id});
@@ -27,14 +29,22 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 		}
 		
 		$scope.createImagePlant = function(imagePlant) {
-			console.log('HERE======>' + angular.toJson(imagePlant, true));
-			ImagePlants.create(imagePlant, function(response) {
-				$state.go('imageplants', {});
-			})
+			ImagePlants.create(imagePlant, 
+				function(response) {
+					$state.go('imageplants', {});
+				},
+				function(error) {
+					if (error.status == 400) {
+						var errorResp = error.data;
+						$scope.errorCode = errorResp.code;
+						$scope.errorMessage = errorResp.message;
+					}
+				}
+			)
+			
 		}
 		
 		$scope.removeImagePlant = function(imagePlant) {
-	    	console.log('HERE======>' + angular.toJson(imagePlant, true));
 	    	ImagePlants.remove({imagePlantId: imagePlant.id}, 
 					function(response) {
 	    		$state.go('imageplants', {});
@@ -46,11 +56,18 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 			updateImagePlant.id = imagePlant.id;
 			updateImagePlant.name = imagePlant.name;
 			updateImagePlant.bucket = imagePlant.bucket;
-	    	console.log('HERE======>' + angular.toJson(updateImagePlant, true));
 	    	ImagePlants.update({imagePlantId: imagePlant.id}, updateImagePlant,
-					function(response) {
-	    		$state.go('imageplant.info', {imagePlantId: imagePlant.id});
-			})
+				function(response) {
+	    			$state.go('imageplant.info', {imagePlantId: imagePlant.id});
+				},
+				function(error) {
+					if (error.status == 400) {
+						var errorResp = error.data;
+						$scope.errorCode = errorResp.code;
+						$scope.errorMessage = errorResp.message;
+					}
+				}
+	    	)
 		}
 		
 	}
@@ -60,9 +77,11 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
     function ($scope, $state, $stateParams, Templates) {
 	
 		$scope.template = initialTemplate($stateParams.imagePlantId);
+		$scope.errorCode = 0;
+		$scope.errorMessage = '';
 	
 		$scope.createTemplate = function (template) {
-			console.log('HERE======>' + angular.toJson(template, true));
+			//console.log('HERE======>' + angular.toJson(template, true));
 			Templates.create(
 					{imagePlantId: $stateParams.imagePlantId,
 						templateName: template.id.templateName},
@@ -71,13 +90,16 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 						$state.go('imageplant.templates', {});
 					},
 					function(error) {
-						console.log('HERE======>error: ' + angular.toJson(error, true));
+						if (error.status == 400) {
+							var errorResp = error.data;
+							$scope.errorCode = errorResp.code;
+							$scope.errorMessage = errorResp.message;
+						}
 					}
 			);
 		}
 		
 		$scope.showTemplate = function() {
-			console.log('HERE======>' + angular.toJson($stateParams, true));
 			Templates.getByName({id: $stateParams.imagePlantId, name: $stateParams.templateName}, 
 					function(response) {
 				$scope.template = response;

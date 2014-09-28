@@ -1,8 +1,6 @@
 /**
  * 
  */
-
-
 var authRefreshImageReport = false;
 var imageReportCounts = null;
 var imageReportSize = null;

@@ -8,6 +8,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.images3.ImageS3;
+import com.images3.exceptions.AmazonS3BucketAccessFailedException;
 import com.images3.exceptions.DuplicateImagePlantNameException;
 import com.images3.exceptions.DuplicateImageVersionException;
 import com.images3.exceptions.DuplicateTemplateNameException;
@@ -210,7 +211,22 @@ public class Global extends GlobalSettings {
                         exp.getMessage());
                 return Results.badRequest(Json.toJson(response));
             }
-            
+        };
+        exceptionHandler = new PreciseExceptionHandler(AmazonS3BucketAccessFailedException.class, exceptionHandler) {
+
+            @Override
+            protected Result getResult(Throwable t) {
+                AmazonS3BucketAccessFailedException exp = (AmazonS3BucketAccessFailedException) t.getCause();
+                Map<String, Object> values = new HashMap<String, Object>();
+                values.put("name", exp.getBucket().getName());
+                values.put("accessKey", exp.getBucket().getAccessKey());
+                values.put("secretKey", exp.getBucket().getSecretKey());
+                ErrorResponse response = new ErrorResponse(
+                        ErrorResponse.AMAZONS3_BUCKET_ACCESS_FAILED, 
+                        values, 
+                        exp.getMessage());
+                return Results.badRequest(Json.toJson(response));
+            }
         };
     }
 
@@ -223,7 +239,6 @@ public class Global extends GlobalSettings {
     }
     
     public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-        System.out.println("HERE======>THROWABLE: " + t.getCause());
         return Promise.<Result>pure(exceptionHandler.toResult(t));
     }
     

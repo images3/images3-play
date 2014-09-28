@@ -14,30 +14,36 @@
     </div>
     <div class="row">
         <div class="col-sm-6 col-md-8 main" >
-           <form class="form-horizontal" role="form">
-	            <div class="form-group">
+            <form class="form-horizontal" role="form">
+	            <div class="form-group {{(errorCode==400104 || errorCode==400101) ? 'has-error' : ''}}">
                     <label for="inputName" class="col-sm-3 control-label">Name</label>
 				    <div class="col-sm-6">
                         <input ng-model="imagePlant.name" type="text" class="form-control" id="inputName" placeholder="ImagePlant Name">
 				    </div>
+				    <div class="col-sm-offset-3 col-sm-12 {{(errorCode==400104 || errorCode==400101) ? 'hide' : ''}}">
+				        <span class="help-block">{{errorMessage}}</span>
+				    </div>
                 </div>
                 <div style="height:20px;"></div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputBucketName" class="col-sm-3 control-label">S3 Bucket</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.bucket.name" type="text" class="form-control" id="inputBucketName" placeholder="Amazon S3 Bucket Name">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputAccessKey" class="col-sm-3 control-label">API Key</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.bucket.accessKey" type="text" class="form-control" id="inputAccessKey" placeholder="Amazon API Key">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputSecretKey" class="col-sm-3 control-label">API Secret</label>
                     <div class="col-sm-6">
                         <input ng-model="imagePlant.bucket.secretKey" type="text" class="form-control" id="inputSecretKey" placeholder="Amazon API Secret">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-12 {{errorCode!=400110 ? 'hide' : ''}}">
+                        <span class="help-block">{{errorMessage}}</span>
                     </div>
                 </div>
                 <div style="height:20px;"></div>
@@ -50,16 +56,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400105 ? 'has-error' : ''}}">
                     <label for="inputResizingWidth" class="col-sm-3 control-label">Image Width</label>
                     <div class="col-sm-3">
                         <input ng-model="imagePlant.resizingConfig.width" type="number" class="form-control" id="inputResizingWidth" placeholder="">
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group {{errorCode==400105 ? 'has-error' : ''}}">
                     <label for="inputResizingHeight" class="col-sm-3 control-label">Image Height</label>
                     <div class="col-sm-3">
                         <input ng-model="imagePlant.resizingConfig.height" type="number" class="form-control" id="inputResizingHeight" placeholder="">
+                    </div>
+                    <div class="col-sm-offset-3 col-sm-12 {{errorCode!=400105 ? 'hide' : ''}}">
+                        <span class="help-block">{{errorMessage}}</span>
                     </div>
                 </div>
                 <div class="form-group">

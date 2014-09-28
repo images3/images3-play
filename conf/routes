@@ -20,6 +20,7 @@ GET     /rest/v1/imageplants                                @com.images3.rest.Im
 GET     /rest/v1/imageplants/:id/imagereport                @com.images3.rest.ImagePlantResource.getImageReport(id:String, templateName:String ?= null, startTime:Long, length:Long, timeUnit:String, types:String)
 
 POST    /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.addTemplate(imagePlantId:String, name:String)
+POST    /rest/v1/imageplants/:imagePlantId/templates  @com.images3.rest.TemplateResource.addTemplate(imagePlantId:String, name:String ?= "")
 PUT     /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.updateTemplate(imagePlantId:String, name:String)
 GET     /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.getTemplate(imagePlantId:String, name:String)
 DELETE  /rest/v1/imageplants/:imagePlantId/templates/:name  @com.images3.rest.TemplateResource.deleteTemplate(imagePlantId:String, name:String)
