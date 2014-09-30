@@ -17,7 +17,6 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 		
 		$scope.showImagePlants = function() {
 			ImagePlants.getAll({cursor: null}, function(response) {
-				//console.log('HERE======>' + JSON.stringify(response));
 				$scope.imagePlants = response.results;
 			})
 		}
@@ -81,7 +80,6 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 		$scope.errorMessage = '';
 	
 		$scope.createTemplate = function (template) {
-			console.log('HERE======>' + angular.toJson(template, true));
 			Templates.create(
 					{imagePlantId: $stateParams.imagePlantId},
 					template,
@@ -107,18 +105,15 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 
 	    $scope.showTemplates = function () {
 			Templates.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
-				console.log('HERE======>' + angular.toJson(response, true));
 				$scope.templates = response.results;
 			})
 		}
 	    
 	    $scope.viewTemplate = function(template) {
-	    	console.log('HERE======>' + angular.toJson(template, true));
 			$state.go('imageplant.template-update', {templateName: template.id.templateName});
 		}
 	    
 	    $scope.removeTemplate = function(template) {
-	    	console.log('HERE======>' + angular.toJson(template, true));
 	    	Templates.remove({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
 					function(response) {
 			    		$state.go('imageplant.templates', {});
@@ -150,7 +145,6 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 imageS3Controllers.controller('ImageListController', ['$scope', '$state', '$stateParams', 'Images', 
     function ($scope, $state, $stateParams, Images) {
 		Images.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
- 		//console.log('HERE======>' + JSON.stringify(response));
 		$scope.images = response.results;
 		
 		$scope.viewImageContent = function(image) {
@@ -177,7 +171,6 @@ imageS3Controllers.controller('ImageReportController',
 			imageReportCounts = null;
 			imageReportSize = null;
 			authRefreshImageReport = true;
-			console.log("HERE======>refreshImageCharts()");
 			var start = new Date().getTime() - (10 * 60 * 1000); //back 10 mins
 			var refreshRate = 10 * 1000; //milliseconds
 			(function tick() {
@@ -191,7 +184,6 @@ imageS3Controllers.controller('ImageReportController',
 							types: 'COUNTS_INBOUND, COUNTS_OUTBOUND, SIZE_INBOUND, SIZE_OUTBOUND'
 							},
 						function(response) {
-					//console.log('HERE======>' + angular.toJson(response, true));		
 					var countData = generateImageReportMorrisData(
 							response.times, response.values.COUNTS_INBOUND, response.values.COUNTS_OUTBOUND);
 					drawImageReportCounts(countData);
@@ -199,7 +191,6 @@ imageS3Controllers.controller('ImageReportController',
 							response.times, response.values.SIZE_INBOUND, response.values.SIZE_OUTBOUND);
 					drawImageReportSize(sizeData);
 				});
-				console.log("HERE======>authRefreshImageReport: " + authRefreshImageReport);
 				if (authRefreshImageReport) {
 					start = start + refreshRate;
 					$timeout(tick, refreshRate);
