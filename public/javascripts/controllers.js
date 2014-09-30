@@ -81,11 +81,10 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 		$scope.errorMessage = '';
 	
 		$scope.createTemplate = function (template) {
-			//console.log('HERE======>' + angular.toJson(template, true));
+			console.log('HERE======>' + angular.toJson(template, true));
 			Templates.create(
-					{imagePlantId: $stateParams.imagePlantId,
-						templateName: template.id.templateName},
-					template.resizingConfig,
+					{imagePlantId: $stateParams.imagePlantId},
+					template,
 					function(response) {
 						$state.go('imageplant.templates', {});
 					},
@@ -108,6 +107,7 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 
 	    $scope.showTemplates = function () {
 			Templates.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
+				console.log('HERE======>' + angular.toJson(response, true));
 				$scope.templates = response.results;
 			})
 		}

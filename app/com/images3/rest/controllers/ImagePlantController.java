@@ -1,4 +1,4 @@
-package com.images3.rest;
+package com.images3.rest.controllers;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,17 +18,18 @@ import com.images3.ImageReportResponse;
 import com.images3.ImageS3;
 import com.images3.common.ImageMetricsType;
 import com.images3.common.TimeInterval;
+import com.images3.rest.models.PaginatedResultModel;
 
 import play.mvc.Controller;
 import play.mvc.Result;
 
-public class ImagePlantResource extends Controller {
+public class ImagePlantController extends Controller {
 
     private ImageS3 imageS3;
     private ObjectMapper objectMapper;
     
     @Inject
-    public ImagePlantResource(ImageS3 imageS3, ObjectMapper objectMapper) {
+    public ImagePlantController(ImageS3 imageS3, ObjectMapper objectMapper) {
         this.imageS3 = imageS3;
         this.objectMapper = objectMapper;
     }
@@ -70,8 +71,8 @@ public class ImagePlantResource extends Controller {
         List<ImagePlantResponse> result = pages.getResult(page);
         String nextPage = (String) pages.getNextPageCursor();
         String prevPage = (String) pages.getPrevPageCursor();
-        PaginatedResultResponse<List<ImagePlantResponse>> response = 
-                new PaginatedResultResponse<List<ImagePlantResponse>>(prevPage, nextPage, result);
+        PaginatedResultModel<List<ImagePlantResponse>> response = 
+                new PaginatedResultModel<List<ImagePlantResponse>>(prevPage, nextPage, result);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

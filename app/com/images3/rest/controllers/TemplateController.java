@@ -1,4 +1,4 @@
-package com.images3.rest;
+package com.images3.rest.controllers;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,45 +9,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.images3.ImageS3;
 import com.images3.TemplateAddRequest;
-import com.images3.common.ResizingConfig;
 import com.images3.common.TemplateIdentity;
+import com.images3.rest.models.PaginatedResultModel;
+import com.images3.rest.models.TemplateAddRequestModel;
 import com.images3.TemplateResponse;
-import com.images3.TemplateUpdateRequest;
 
 import play.mvc.Controller;
 import play.mvc.Result;
 
-public class TemplateResource extends Controller {
+public class TemplateController extends Controller {
 
     private ImageS3 imageS3;
     private ObjectMapper objectMapper;
     
     @Inject
-    public TemplateResource(ImageS3 imageS3, ObjectMapper objectMapper) {
+    public TemplateController(ImageS3 imageS3, ObjectMapper objectMapper) {
         this.imageS3 = imageS3;
         this.objectMapper = objectMapper;
     }
     
-    public Result addTemplate(String imagePlantId, String name) throws IOException {
-        ResizingConfig resizingConfig = objectMapper.readValue(
-                request().body().asJson().toString(), ResizingConfig.class);
+    public Result addTemplate(String imagePlantId) throws IOException {
+        TemplateAddRequestModel requestModel = objectMapper.readValue(
+                request().body().asJson().toString(), TemplateAddRequestModel.class);
         TemplateAddRequest request = new TemplateAddRequest(
-                new TemplateIdentity(imagePlantId, name),
-                resizingConfig
-                );
+                new TemplateIdentity(imagePlantId, requestModel.getName()), 
+                requestModel.getResizingConfig());
         TemplateResponse response = imageS3.addTemplate(request);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
     
-    public Result updateTemplate(String imagePlantId, String name) throws IOException {
-        TemplateUpdateRequest request = objectMapper.readValue(
-                request().body().asJson().toString(), TemplateUpdateRequest.class);
-        request = new TemplateUpdateRequest(
-                new TemplateIdentity(imagePlantId, name),
-                request.isArchived()
-                );
-        TemplateResponse response = imageS3.updateTemplate(request);
+    public Result archiveTemplate(String imagePlantId, String name) throws IOException {
+        boolean isArchived = request().body().asJson().get("isArchived").asBoolean();
+        TemplateIdentity id = new TemplateIdentity(imagePlantId, name);
+        TemplateResponse response = imageS3.archiveTemplate(id, isArchived);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
@@ -87,8 +82,8 @@ public class TemplateResource extends Controller {
         List<TemplateResponse> templates = pages.getResult(page);
         String nextPage = (String) pages.getNextPageCursor();
         String prevPage = (String) pages.getPrevPageCursor();
-        PaginatedResultResponse<List<TemplateResponse>> response = 
-                new PaginatedResultResponse<List<TemplateResponse>>(prevPage, nextPage, templates);
+        PaginatedResultModel<List<TemplateResponse>> response = 
+                new PaginatedResultModel<List<TemplateResponse>>(prevPage, nextPage, templates);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

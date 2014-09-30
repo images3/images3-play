@@ -18,7 +18,7 @@
 	            <div class="form-group  {{(errorCode==400103 || errorCode==400106 || errorCode==400107) ? 'has-error' : ''}}">
                     <label for="inputName" class="col-sm-3 control-label">Name</label>
 				    <div class="col-sm-6">
-                        <input ng-model="template.id.templateName" type="text" class="form-control" id="inputName" placeholder="Template Name">
+                        <input ng-model="template.name" type="text" class="form-control" id="inputName" placeholder="Template Name">
 				    </div>
 				    <div class="col-sm-offset-3 col-sm-12 {{(errorCode==400103 || errorCode==400106 || errorCode==400107) ? 'hide' : ''}}">
                         <span class="help-block">{{errorMessage}}</span>

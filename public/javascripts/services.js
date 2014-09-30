@@ -68,11 +68,10 @@ imageS3Services.factory('Templates', ['$resource', function($resource) {
 							},
 					isArray: false},
 				create: {
-					url: '/rest/v1/imageplants/:imagePlantId/templates/:templateName',
+					url: '/rest/v1/imageplants/:imagePlantId/templates',
 					method: 'POST',
 					params:{
-						imagePlantId: '@imagePlantId', 
-						templateName: '@templateName'
+						imagePlantId: '@imagePlantId'
 						}},
 				remove: {
 					url: '/rest/v1/imageplants/:imagePlantId/templates/:templateName',

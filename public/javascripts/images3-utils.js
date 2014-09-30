@@ -21,10 +21,7 @@ function initialImagePlant() {
 
 function initialTemplate(imagePlantId) {
 	return {
-		id: {
-			imagePlantId: imagePlantId,
-			templateName: ""
-		},
+		name: "",
 		resizingConfig: {
 			unit: "PIXEL",
 			width: 0,

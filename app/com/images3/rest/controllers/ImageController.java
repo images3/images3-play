@@ -1,4 +1,4 @@
-package com.images3.rest;
+package com.images3.rest.controllers;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,20 +11,20 @@ import com.google.inject.Inject;
 import com.images3.ImageAddRequest;
 import com.images3.ImageResponse;
 import com.images3.ImageS3;
-import com.images3.SimpleImageResponse;
 import com.images3.common.ImageIdentity;
 import com.images3.common.TemplateIdentity;
+import com.images3.rest.models.PaginatedResultModel;
 
 import play.mvc.Controller;
 import play.mvc.Result;
 
-public class ImageResource extends Controller {
+public class ImageController extends Controller {
 
     private ImageS3 imageS3;
     private ObjectMapper objectMapper;
     
     @Inject
-    public ImageResource(ImageS3 imageS3, ObjectMapper objectMapper) {
+    public ImageController(ImageS3 imageS3, ObjectMapper objectMapper) {
         this.imageS3 = imageS3;
         this.objectMapper = objectMapper;
     }
@@ -50,33 +50,33 @@ public class ImageResource extends Controller {
     }
     
     public Result getImages(String imagePlantId, String page) throws IOException {
-        PaginatedResult<List<SimpleImageResponse>> pages = imageS3.getImages(imagePlantId);
+        PaginatedResult<List<ImageResponse>> pages = imageS3.getImages(imagePlantId);
         return getPaginatedResultResponse(pages, page);
     }
     
     public Result getImagesByTemplate(String imagePlantId, String templateName, String page) throws IOException {
-        PaginatedResult<List<SimpleImageResponse>> pages = 
+        PaginatedResult<List<ImageResponse>> pages = 
                 imageS3.getImages(new TemplateIdentity(imagePlantId, templateName));
         return getPaginatedResultResponse(pages, page);
     }
     
     public Result getVersioningImages(String imagePlantId, String imageId, String page) throws IOException {
-        PaginatedResult<List<SimpleImageResponse>> pages = 
+        PaginatedResult<List<ImageResponse>> pages = 
                 imageS3.getVersioningImages(new ImageIdentity(imagePlantId, imageId));
         return getPaginatedResultResponse(pages, page);
     }
     
-    private Result getPaginatedResultResponse(PaginatedResult<List<SimpleImageResponse>> pages, 
+    private Result getPaginatedResultResponse(PaginatedResult<List<ImageResponse>> pages, 
             String page) throws IOException {
         if (null == page 
                 || page.trim().length() == 0) {
             page = (String) pages.getFirstPageCursor();
         }
-        List<SimpleImageResponse> images = pages.getResult(page);
+        List<ImageResponse> images = pages.getResult(page);
         String nextPage = (String) pages.getNextPageCursor();
         String prevPage = (String) pages.getPrevPageCursor();
-        PaginatedResultResponse<List<SimpleImageResponse>> response = 
-                new PaginatedResultResponse<List<SimpleImageResponse>>(prevPage, nextPage, images);
+        PaginatedResultModel<List<ImageResponse>> response = 
+                new PaginatedResultModel<List<ImageResponse>>(prevPage, nextPage, images);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }

@@ -1,20 +1,16 @@
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.inject.Provider;
+import com.images3.common.AmazonS3Bucket;
 import com.images3.common.ResizingConfig;
-import com.images3.common.ResizingUnit;
 import com.images3.common.TemplateIdentity;
+import com.images3.ImagePlantAddRequest;
 import com.images3.TemplateResponse;
-import com.images3.TemplateUpdateRequest;
-import com.images3.rest.codec.ResizingConfigDeserializer;
-import com.images3.rest.codec.ResizingConfigSerializer;
-import com.images3.rest.codec.ResizingUnitDeserializer;
-import com.images3.rest.codec.ResizingUnitSerializer;
-import com.images3.rest.codec.TemplateIdentityDeserializer;
-import com.images3.rest.codec.TemplateIdentitySerializer;
-import com.images3.rest.codec.TemplateResponseSerializer;
-import com.images3.rest.codec.TemplateUpdateRequestDeserializer;
+import com.images3.rest.models.AmazonS3BucketModel;
+import com.images3.rest.models.ImagePlantAddRequestModel;
+import com.images3.rest.models.ResizingConfigModel;
+import com.images3.rest.models.TemplateIdentityModel;
+import com.images3.rest.models.TemplateResponseModel;
 
 
 public class ObjectMapperProvider implements Provider<ObjectMapper> {
@@ -24,17 +20,11 @@ public class ObjectMapperProvider implements Provider<ObjectMapper> {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(com.fasterxml.jackson.databind.SerializationFeature.
             WRITE_DATES_AS_TIMESTAMPS , false);
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(ResizingUnit.class, new ResizingUnitSerializer());
-        module.addSerializer(ResizingConfig.class, new ResizingConfigSerializer());
-        module.addSerializer(TemplateIdentity.class, new TemplateIdentitySerializer());
-        module.addSerializer(TemplateResponse.class, new TemplateResponseSerializer());
-        
-        module.addDeserializer(ResizingUnit.class, new ResizingUnitDeserializer());
-        module.addDeserializer(ResizingConfig.class, new ResizingConfigDeserializer());
-        module.addDeserializer(TemplateIdentity.class, new TemplateIdentityDeserializer());
-        module.addDeserializer(TemplateUpdateRequest.class, new TemplateUpdateRequestDeserializer());
-        mapper.registerModule(module);
+        mapper.addMixInAnnotations(ImagePlantAddRequest.class, ImagePlantAddRequestModel.class);
+        mapper.addMixInAnnotations(AmazonS3Bucket.class, AmazonS3BucketModel.class);
+        mapper.addMixInAnnotations(ResizingConfig.class, ResizingConfigModel.class);
+        mapper.addMixInAnnotations(TemplateIdentity.class, TemplateIdentityModel.class);
+        mapper.addMixInAnnotations(TemplateResponse.class, TemplateResponseModel.class);
         return mapper;
     }
 
