@@ -2,8 +2,7 @@
  * 
  */
 var authRefreshImageReport = false;
-var imageReportCounts = null;
-var imageReportSize = null;
+
 
 var imageS3 = angular.module('imageS3', ['ui.router', 'imageS3Controllers']);
 
@@ -12,15 +11,11 @@ imageS3.run(['$rootScope', '$state', '$stateParams',
 		$rootScope.$state = $state;
 		$rootScope.$stateParams = $stateParams;
 		$rootScope.$on('$locationChangeSuccess', function(event, currRoute, prevRoute) {
+			console.log("HERE======>currRoute: " + currRoute);
 			var position = currRoute.indexOf('/overview');
-			if ((position + 9) == currRoute.length) {
-				imageReportCounts = null;
-				imageReportSize = null;
-				authRefreshImageReport = true;
-			} else {
+			if ((position + 9) != currRoute.length) {
 				authRefreshImageReport = false;
 			}
-			//console.log(authRefreshImageReport);
 		});
 	}
 ]);

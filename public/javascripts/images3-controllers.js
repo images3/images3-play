@@ -166,35 +166,47 @@ imageS3Controllers.controller('ImageContentController', ['$scope', '$state', '$s
 	}
 ]);
 
+var imageReportCounts = null;
+var imageReportSize = null;
+
 imageS3Controllers.controller('ImageReportController', 
 		['$rootScope', '$scope', '$state', '$stateParams', '$timeout', 'ImagePlants',
     function ($rootScope, $scope, $state, $stateParams, $timeout, ImagePlants) {
-		console.log('HERE======>ImagePlantId: ' + $stateParams.imagePlantId);
-		var start = new Date().getTime() - (10 * 60 * 1000); //back 10 mins
-		var refreshRate = 10 * 1000; //milliseconds
-		(function tick() {
-			ImagePlants.getImageReport(
-					{
-						id: $stateParams.imagePlantId,
-						templateName: '',
-						startTime: start,
-						length: '10',
-						timeUnit: 'MINUTES',
-						types: 'COUNTS_INBOUND, COUNTS_OUTBOUND, SIZE_INBOUND, SIZE_OUTBOUND'
-						},
-					function(response) {
-				var countData = generateImageReportMorrisData(
-						response.times, response.values.COUNTS_INBOUND, response.values.COUNTS_OUTBOUND);
-				drawImageReportCounts(countData);
-				var sizeData = generateImageReportMorrisData(
-						response.times, response.values.SIZE_INBOUND, response.values.SIZE_OUTBOUND);
-				drawImageReportSize(sizeData);
-			});
-			if (authRefreshImageReport) {
-				start = start + refreshRate;
-				$timeout(tick, refreshRate);
-			}
-		})();
+			
+		$scope.refreshImageCharts = function() {
+			imageReportCounts = null;
+			imageReportSize = null;
+			authRefreshImageReport = true;
+			console.log("HERE======>refreshImageCharts()");
+			var start = new Date().getTime() - (10 * 60 * 1000); //back 10 mins
+			var refreshRate = 10 * 1000; //milliseconds
+			(function tick() {
+				ImagePlants.getImageReport(
+						{
+							id: $stateParams.imagePlantId,
+							templateName: '',
+							startTime: start,
+							length: '10',
+							timeUnit: 'MINUTES',
+							types: 'COUNTS_INBOUND, COUNTS_OUTBOUND, SIZE_INBOUND, SIZE_OUTBOUND'
+							},
+						function(response) {
+					//console.log('HERE======>' + angular.toJson(response, true));		
+					var countData = generateImageReportMorrisData(
+							response.times, response.values.COUNTS_INBOUND, response.values.COUNTS_OUTBOUND);
+					drawImageReportCounts(countData);
+					var sizeData = generateImageReportMorrisData(
+							response.times, response.values.SIZE_INBOUND, response.values.SIZE_OUTBOUND);
+					drawImageReportSize(sizeData);
+				});
+				console.log("HERE======>authRefreshImageReport: " + authRefreshImageReport);
+				if (authRefreshImageReport) {
+					start = start + refreshRate;
+					$timeout(tick, refreshRate);
+				}
+			})();
+		}
+		
 	}
 ]);
 
