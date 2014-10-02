@@ -45,19 +45,37 @@
                         <p class="form-control-static">{{template.resizingConfig.isKeepProportions}}</p>
                     </div>
                 </div>
-                <div style="height:20px;"></div>
-                <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-2">
-                        <button ng-click="$state.go('imageplant.templates', {});" class="btn btn-default">Back</button>
-                    </div>
-                    <div class="col-sm-2">
-                        <button ng-click="updateTemplateAvailability(template)" type="submit" class="btn btn-primary">{{template.isArchived ? 'Active' : 'Deactive'}}</button>
-                    </div>
-	                <div class="col-sm-2">
-                        <button ng-click="removeTemplate(template)" type="submit" class="btn btn-danger" ng-disabled="!template.isRemovable">Remove</button>
-                    </div>
-	            </div>
             </form>
+        </div>
+    </div>
+    <div style="height:20px;"></div>
+    <div class="row" >
+        <div class="col-sm-6 col-md-7 main">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    
+                    <span class="label label-warning {{template.isArchived ? '' : 'hide'}}">WARNING</span>
+                    <h6 class="{{template.isArchived ? '' : 'hide'}}">This template still CANNOT be accessed. you need to activate it first.</h6>
+                    <span class="label label-danger {{template.isArchived ? 'hide' : ''}}">WARNING</span>
+                    <h6 class="{{template.isArchived ? 'hide' : ''}}">Deactivating this template will cause all associated images cannot be accessed.</h6>
+                    <div class="pull-right" style="margin-bottom: -15px;">
+                        <button ng-click="updateTemplateAvailability(template)" type="submit" class="btn btn-link"><h6>{{template.isArchived ? 'Activate' : 'Deactivate'}}</h6></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-sm-6 col-md-7 main">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span class="label label-info">INFO</span>
+                    <h6>This template can be removed only if there is no associated images exists.</h6>
+                    <div class="pull-right" style="margin-bottom: -15px;">
+                        <button ng-click="removeTemplate(template)" type="submit" class="btn btn-link" ng-disabled="!template.isRemovable"><h6>Remove</h6></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

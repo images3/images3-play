@@ -37,9 +37,9 @@ public class Global extends GlobalSettings {
     public void onStart(Application app) {
         initExceptionHandlers();
         final ImageS3Provider imageS3Provider = new ImageS3Provider(
-                app.configuration().getString("images3.conf"),
-                app.configuration().getString("imageprocessor.conf"),
-                app.configuration().getString("mongodb.conf")
+                app.getFile(app.configuration().getString("images3.conf")).getAbsolutePath(),
+                app.getFile(app.configuration().getString("imageprocessor.conf")).getAbsolutePath(),
+                app.getFile(app.configuration().getString("mongodb.conf")).getAbsolutePath()
                 );
         injector = Guice.createInjector(new AbstractModule() {
 

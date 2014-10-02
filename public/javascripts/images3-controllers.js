@@ -4,13 +4,14 @@
 
 var imageS3Controllers = angular.module('imageS3Controllers', ['imageS3Services']);
 
-imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$stateParams', 'ImagePlants', 
-    function ($scope, $state, $stateParams, ImagePlants) {
+imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$stateParams', 'prompt', 'ImagePlants', 
+    function ($scope, $state, $stateParams, prompt, ImagePlants) {
 	
 		$scope.imagePlant = initialImagePlant($stateParams.imagePlantId);
 		$scope.errorCode = 0;
 		$scope.errorMessage = '';
-	
+
+		
 		$scope.viewImagePlant = function(imagePlant) {
 			$state.go('imageplant.overview', {imagePlantId: imagePlant.id});
 		}
@@ -44,10 +45,29 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 		}
 		
 		$scope.removeImagePlant = function(imagePlant) {
-	    	ImagePlants.remove({imagePlantId: imagePlant.id}, 
-					function(response) {
-	    		$state.go('imageplants', {});
-			})
+			
+			prompt({
+				"title": "Do you want to continue to remove this image plant?",
+				"message": "Removing this image plant will remove all associated images and template completely!" +
+						" There is no way to undo this.",
+				"buttons": [
+					{
+						"label": "Continue",
+						"primary": true
+					},
+					{
+						"label": "Cancel",
+						"cancel": true
+					}
+				]
+			}).then(function(result){
+				if (result.primary) {
+					$scope.myPromise = ImagePlants.remove({imagePlantId: imagePlant.id}, 
+							function(response) {
+			    		$state.go('imageplants', {});
+					});
+				}
+			});
 		}
 		
 		$scope.updateImagePlant = function(imagePlant) {
@@ -72,8 +92,8 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 	}
 ]);
 
-imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$stateParams', 'Templates',
-    function ($scope, $state, $stateParams, Templates) {
+imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$stateParams', 'prompt', 'Templates',
+    function ($scope, $state, $stateParams, prompt, Templates) {
 	
 		$scope.template = initialTemplate($stateParams.imagePlantId);
 		$scope.errorCode = 0;
@@ -114,29 +134,76 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 		}
 	    
 	    $scope.removeTemplate = function(template) {
-	    	Templates.remove({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
-					function(response) {
-			    		$state.go('imageplant.templates', {});
+	    	prompt({
+				"title": "Do you want to continue to remove this template?",
+				"message": "After remove this template, there is no way to undo this.",
+				"buttons": [
+					{
+						"label": "Continue",
+						"primary": true
+					},
+					{
+						"label": "Cancel",
+						"cancel": true
 					}
-	    	)
+				]
+			}).then(function(result){
+				if (result.primary) {
+					Templates.remove({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
+							function(response) {
+					    		$state.go('imageplant.templates', {});
+							}
+			    	)
+				}
+			});
+	    	
 		}
 	    
 	    $scope.updateTemplateAvailability = function(template) {
-	    	var isArchived = template.isArchived;
-	    	if (template.isArchived) {
-	    		template.isArchived = false;
+	    	var newTemplate = angular.copy(template);
+	    	if (newTemplate.isArchived) {
+	    		newTemplate.isArchived = false;
+	    		Templates.update({imagePlantId: newTemplate.id.imagePlantId, templateName: newTemplate.id.templateName}, 
+						newTemplate,
+						function(data) {
+							//console.log("HERE======>data:  " + angular.toJson(data, true));
+				    		$state.go('imageplant.template-update', {templateName: data.id.templateName});
+				    		template.isArchived = data.isArchived; 
+						},
+						function(error) {
+						}
+		    	)
 	    	} else {
-	    		template.isArchived = true;
-	    	}
-	    	Templates.update({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
-	    			template,
-					function(data) {
-			    		$state.go('imageplant.template-update', {templateName: template.id.templateName});
-					},
-					function(error) {
-						template.isArchived = isArchived;
+	    		newTemplate.isArchived = true;
+	    		prompt({
+					"title": "Do you want to continue to deactivate this template?",
+					"message": "Deactivating this template will cause all associated images cannot be accessed.",
+					"buttons": [
+						{
+							"label": "Continue",
+							"primary": true
+						},
+						{
+							"label": "Cancel",
+							"cancel": true
+						}
+					]
+				}).then(function(result){
+					if (result.primary) {
+						Templates.update({imagePlantId: newTemplate.id.imagePlantId, templateName: newTemplate.id.templateName}, 
+								newTemplate,
+								function(data) {
+						    		$state.go('imageplant.template-update', {templateName: data.id.templateName});
+						    		template.isArchived = data.isArchived; 
+								},
+								function(error) {
+								}
+				    	)
 					}
-	    	)
+				});
+	    	}
+	    	
+	    	
 		}
 	    
 	}

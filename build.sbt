@@ -17,4 +17,9 @@ libraryDependencies ++= Seq(
   "com.images3" % "images3-spi-imgprocessor" % "0.1.0-SNAPSHOT"
 )
 
-resolvers += "Local Maven Repository" at "file:///Users/ruisun/.m2/repository"
+resolvers += Resolver.mavenLocal
+
+
+//resolvers += (
+//    "Local Maven Repository" at "file:///Users/ruisun/.m2/repository"
+//)
