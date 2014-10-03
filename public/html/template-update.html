@@ -58,8 +58,9 @@
                     <h6 class="{{template.isArchived ? '' : 'hide'}}">This template still CANNOT be accessed. you need to activate it first.</h6>
                     <span class="label label-danger {{template.isArchived ? 'hide' : ''}}">WARNING</span>
                     <h6 class="{{template.isArchived ? 'hide' : ''}}">Deactivating this template will cause all associated images cannot be accessed.</h6>
+                    <h6 class="{{template.id.templateName == 'Master' ? '' : 'hide'}}"><strong>Master template cannot be deactivated</strong></h6>
                     <div class="pull-right" style="margin-bottom: -15px;">
-                        <button ng-click="updateTemplateAvailability(template)" type="submit" class="btn btn-link"><h6>{{template.isArchived ? 'Activate' : 'Deactivate'}}</h6></button>
+                        <button ng-click="updateTemplateAvailability(template)" type="submit" class="btn btn-link" ng-disabled="template.id.templateName == 'Master'"><h6>{{template.isArchived ? 'Activate' : 'Deactivate'}}</h6></button>
                     </div>
                 </div>
             </div>

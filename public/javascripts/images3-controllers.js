@@ -10,7 +10,6 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 		$scope.imagePlant = initialImagePlant($stateParams.imagePlantId);
 		$scope.errorCode = 0;
 		$scope.errorMessage = '';
-
 		
 		$scope.viewImagePlant = function(imagePlant) {
 			$state.go('imageplant.overview', {imagePlantId: imagePlant.id});
@@ -98,7 +97,7 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 		$scope.template = initialTemplate($stateParams.imagePlantId);
 		$scope.errorCode = 0;
 		$scope.errorMessage = '';
-	
+		
 		$scope.createTemplate = function (template) {
 			Templates.create(
 					{imagePlantId: $stateParams.imagePlantId},
@@ -211,19 +210,25 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 
 imageS3Controllers.controller('ImageListController', ['$scope', '$state', '$stateParams', 'Images', 
     function ($scope, $state, $stateParams, Images) {
-		Images.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
-		$scope.images = response.results;
 		
-		$scope.viewImageContent = function(image) {
-			$state.go('imageplant.images.imagecontent',{imageId: image.id.imageId});
-		}
-	})}
+		Images.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
+			$scope.images = response.results;
+		
+			$scope.viewImageContent = function(image) {
+				$state.go('imageplant.images.imagecontent',{imageId: image.id.imageId});
+			}
+		})
+	}
 ]);
 
 imageS3Controllers.controller('ImageContentController', ['$scope', '$state', '$stateParams', 
     function ($scope, $state, $stateParams) {
-		$scope.imagePlantId = $stateParams.imagePlantId;
-		$scope.imageId = $stateParams.imageId;
+		
+		$scope.loadImageContent = function() {
+			$scope.imagePlantId = $stateParams.imagePlantId;
+			$scope.imageId = $stateParams.imageId;
+		}
+		
 	}
 ]);
 
