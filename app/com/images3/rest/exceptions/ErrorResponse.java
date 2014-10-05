@@ -1,3 +1,4 @@
+package com.images3.rest.exceptions;
 import java.util.Collections;
 import java.util.Map;
 
@@ -17,20 +18,20 @@ public class ErrorResponse {
     public static final int AMAZONS3_BUCKET_ACCESS_FAILED = 400110;
 
     private int code;
-    private Map<String, Object> values;
+    private Map<String, Object> details;
     private String message;
     
-    public ErrorResponse(int code, Map<String, Object> values, String message) {
+    public ErrorResponse(int code, Map<String, Object> details, String message) {
         this.code = code;
-        this.values = Collections.unmodifiableMap(values);
+        this.details = Collections.unmodifiableMap(details);
         this.message = message;
     }
     
     public int getCode() {
         return code;
     }
-    public Map<String, Object> getValues() {
-        return values;
+    public Map<String, Object> getDetails() {
+        return details;
     }
     public String getMessage() {
         return message;

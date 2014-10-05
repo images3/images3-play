@@ -1,12 +1,13 @@
+package com.images3.rest.exceptions;
 import play.mvc.Result;
 import play.mvc.Results;
 
 
-public abstract class ExceptionHandler {
+public abstract class ExceptionMapper {
 
-    private ExceptionHandler successor;
+    private ExceptionMapper successor;
     
-    public ExceptionHandler(ExceptionHandler successor) {
+    public ExceptionMapper(ExceptionMapper successor) {
         this.successor = successor;
     }
     

@@ -9,16 +9,15 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.images3.ImageS3;
 import com.images3.exceptions.AmazonS3BucketAccessFailedException;
-import com.images3.exceptions.DuplicateImagePlantNameException;
-import com.images3.exceptions.DuplicateImageVersionException;
-import com.images3.exceptions.DuplicateTemplateNameException;
-import com.images3.exceptions.IllegalImagePlantNameLengthException;
 import com.images3.exceptions.IllegalResizingDimensionsException;
 import com.images3.exceptions.IllegalTemplateNameException;
 import com.images3.exceptions.IllegalTemplateNameLengthException;
 import com.images3.exceptions.NoSuchEntityFoundException;
 import com.images3.exceptions.UnknownImageFormatException;
 import com.images3.exceptions.UnremovableTemplateException;
+import com.images3.rest.exceptions.ErrorResponse;
+import com.images3.rest.exceptions.ExceptionMapper;
+import com.images3.rest.exceptions.PreciseExceptionMapper;
 
 import play.Application;
 import play.GlobalSettings;
@@ -32,7 +31,7 @@ import play.mvc.Results;
 public class Global extends GlobalSettings {
 
     private Injector injector;
-    private ExceptionHandler exceptionHandler;
+    private ExceptionMapper exceptionHandler;
     
     public void onStart(Application app) {
         initExceptionHandlers();
@@ -54,70 +53,8 @@ public class Global extends GlobalSettings {
     }
     
     private void initExceptionHandlers() {
-        exceptionHandler = new PreciseExceptionHandler(DuplicateImagePlantNameException.class) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                DuplicateImagePlantNameException exp = (DuplicateImagePlantNameException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("name", exp.getName());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.DUPLICATE_IMAGEPLANT_NAME, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionHandler(DuplicateImageVersionException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                DuplicateImageVersionException exp = (DuplicateImageVersionException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("templateName", exp.getTemplateName());
-                values.put("originalImageId", exp.getOriginalImageId());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.DUPLICATE_IMAGE_VERSION, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionHandler(DuplicateTemplateNameException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                DuplicateTemplateNameException exp = (DuplicateTemplateNameException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("name", exp.getName());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.DUPLICATE_TEMPALTE_NAME, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionHandler(IllegalImagePlantNameLengthException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                IllegalImagePlantNameLengthException exp = (IllegalImagePlantNameLengthException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("name", exp.getName());
-                values.put("minLength", exp.getMinLength());
-                values.put("maxLength", exp.getMaxLength());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.ILLEGAL_IMAGEPLANT_NAME_LENGTH, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionHandler(IllegalResizingDimensionsException.class, exceptionHandler) {
+   
+        exceptionHandler = new PreciseExceptionMapper(IllegalResizingDimensionsException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {
@@ -134,7 +71,7 @@ public class Global extends GlobalSettings {
             }
             
         };
-        exceptionHandler = new PreciseExceptionHandler(IllegalTemplateNameException.class, exceptionHandler) {
+        exceptionHandler = new PreciseExceptionMapper(IllegalTemplateNameException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {
@@ -149,7 +86,7 @@ public class Global extends GlobalSettings {
             }
             
         };
-        exceptionHandler = new PreciseExceptionHandler(IllegalTemplateNameLengthException.class, exceptionHandler) {
+        exceptionHandler = new PreciseExceptionMapper(IllegalTemplateNameLengthException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {
@@ -166,7 +103,7 @@ public class Global extends GlobalSettings {
             }
             
         };
-        exceptionHandler = new PreciseExceptionHandler(NoSuchEntityFoundException.class, exceptionHandler) {
+        exceptionHandler = new PreciseExceptionMapper(NoSuchEntityFoundException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {
@@ -182,7 +119,7 @@ public class Global extends GlobalSettings {
             }
             
         };
-        exceptionHandler = new PreciseExceptionHandler(UnknownImageFormatException.class, exceptionHandler) {
+        exceptionHandler = new PreciseExceptionMapper(UnknownImageFormatException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {
@@ -197,7 +134,7 @@ public class Global extends GlobalSettings {
             }
             
         };
-        exceptionHandler = new PreciseExceptionHandler(UnremovableTemplateException.class, exceptionHandler) {
+        exceptionHandler = new PreciseExceptionMapper(UnremovableTemplateException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {
@@ -212,7 +149,7 @@ public class Global extends GlobalSettings {
                 return Results.badRequest(Json.toJson(response));
             }
         };
-        exceptionHandler = new PreciseExceptionHandler(AmazonS3BucketAccessFailedException.class, exceptionHandler) {
+        exceptionHandler = new PreciseExceptionMapper(AmazonS3BucketAccessFailedException.class, exceptionHandler) {
 
             @Override
             protected Result getResult(Throwable t) {

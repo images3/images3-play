@@ -37,24 +37,58 @@ public class ImageController extends Controller {
         return ok(respJson);
     }
     
-    public Result getImage(String imagePlantId, String imageId) throws IOException {
+    public Result getImageContent(String imagePlantId, String imageId, String template) throws IOException {
+        if (null == template) {
+            return getImageContent(imagePlantId, imageId);
+        } else {
+            return getImageContentWithTemplate(imagePlantId, imageId, template);
+        }
+    }
+    
+    private Result getImageContent(String imagePlantId, String imageId) throws IOException {
+        File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId));
+        return ok(content, content.getName()); 
+    }
+
+    private Result getImageContentWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
+        File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId), templateName);
+        return ok(content, content.getName()); 
+    }
+
+    public Result getImage(String imagePlantId, String imageId, String template) throws IOException {
+        if (null == template) {
+            return getImage(imagePlantId, imageId);
+        } else {
+            return getImageWithTemplate(imagePlantId, imageId, template);
+        }
+    }
+    
+    private Result getImage(String imagePlantId, String imageId) throws IOException {
         ImageResponse response = imageS3.getImage(new ImageIdentity(imagePlantId, imageId));
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson); 
     }
     
-    public Result getImageWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
+    private Result getImageWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
         ImageResponse response = imageS3.getImage(new ImageIdentity(imagePlantId, imageId), templateName);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson); 
     }
     
-    public Result getImages(String imagePlantId, String page) throws IOException {
+    public Result getImages(String imagePlantId, String page, String template) throws IOException {
+        if (null == template) {
+            return getImages(imagePlantId, page);
+        } else {
+            return getImagesByTemplate(imagePlantId, template, page);
+        }
+    }
+    
+    private Result getImages(String imagePlantId, String page) throws IOException {
         PaginatedResult<List<ImageResponse>> pages = imageS3.getImages(imagePlantId);
         return getPaginatedResultResponse(pages, page);
     }
     
-    public Result getImagesByTemplate(String imagePlantId, String templateName, String page) throws IOException {
+    private Result getImagesByTemplate(String imagePlantId, String templateName, String page) throws IOException {
         PaginatedResult<List<ImageResponse>> pages = 
                 imageS3.getImages(new TemplateIdentity(imagePlantId, templateName));
         return getPaginatedResultResponse(pages, page);
@@ -79,15 +113,5 @@ public class ImageController extends Controller {
                 new PaginatedResultModel<List<ImageResponse>>(prevPage, nextPage, images);
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
-    }
-    
-    public Result getImageContent(String imagePlantId, String imageId) throws IOException {
-        File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId));
-        return ok(content, content.getName()); 
-    }
-    
-    public Result getImageContentWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
-        File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId), templateName);
-        return ok(content, content.getName()); 
     }
 }
