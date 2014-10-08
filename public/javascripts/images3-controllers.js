@@ -12,6 +12,7 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 		$scope.errorMessage = '';
 		
 		$scope.viewImagePlant = function(imagePlant) {
+			currentImagePlantId = imagePlant.id;
 			$state.go('imageplant.overview', {imagePlantId: imagePlant.id});
 		}
 		
@@ -76,7 +77,23 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 			updateImagePlant.bucket = imagePlant.bucket;
 	    	ImagePlants.update({imagePlantId: imagePlant.id}, updateImagePlant,
 				function(response) {
-	    			$state.go('imageplant.info', {imagePlantId: imagePlant.id});
+		    		prompt({
+						"title": "Success",
+						"message": "ImagePlant, '" + imagePlant.name + "' has been updated.",
+						"buttons": [
+							{
+								"label": "Ok",
+								"primary": true
+							}
+						]
+					}).then(function(result){
+						$state.transitionTo($state.current, $stateParams, {
+						    reload: true,
+						    inherit: false,
+						    notify: true
+						});
+					});
+	    			
 				},
 				function(error) {
 					if (error.status == 400) {
@@ -240,9 +257,10 @@ imageS3Controllers.controller('ImageReportController',
     function ($rootScope, $scope, $state, $stateParams, $timeout, ImagePlants) {
 			
 		$scope.refreshImageCharts = function() {
+			var imagePlantId = $stateParams.imagePlantId;
 			imageReportCounts = null;
 			imageReportSize = null;
-			authRefreshImageReport = true;
+			autoRefreshImageReport[imagePlantId] = true;
 			var start = new Date().getTime() - (10 * 60 * 1000); //back 10 mins
 			var refreshRate = 10 * 1000; //milliseconds
 			(function tick() {
@@ -256,17 +274,19 @@ imageS3Controllers.controller('ImageReportController',
 							types: 'COUNTS_INBOUND, COUNTS_OUTBOUND, SIZE_INBOUND, SIZE_OUTBOUND'
 							},
 						function(response) {
+					if (!autoRefreshImageReport[imagePlantId]) {
+						return;
+					}
 					var countData = generateImageReportMorrisData(
 							response.times, response.values.COUNTS_INBOUND, response.values.COUNTS_OUTBOUND);
 					drawImageReportCounts(countData);
 					var sizeData = generateImageReportMorrisData(
 							response.times, response.values.SIZE_INBOUND, response.values.SIZE_OUTBOUND);
 					drawImageReportSize(sizeData);
-				});
-				if (authRefreshImageReport) {
 					start = start + refreshRate;
 					$timeout(tick, refreshRate);
-				}
+				});
+				
 			})();
 		}
 		

@@ -1,7 +1,7 @@
 <div cg-busy="{promise:myPromise,message:'Removing...',backdrop:true,templateUrl:'html/custom-busy-template.html', delay:100,minDuration:700}">
 <div class="container-fluid" ng-init="showImagePlant()">
     <div class="row" >
-        <div class="col-sm-12 col-md-12 main">
+        <div class="col-sm-12 col-md-12">
             <div style="border-bottom:1px solid #ddd">
                 <div class="row" style="position: relative;">
                     <div class="col-sm-6 col-md-6" >
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-8 main" >
+        <div class="col-sm-6 col-md-8"  style="margin-top: 20px;">
            <form class="form-horizontal" role="form">
                 <div class="form-group">
                     <label for="inputName" class="col-sm-3 control-label">Id</label>
@@ -74,7 +74,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <span class="label label-danger">WARNING</span>
-                    <h6>Removing this image plant will remove all associated images and template completely! There is no way to undo this, so proceed with caution.</h6>
+                    <h6>Removing this image plant will remove all associated images and templates completely! There is no way to undo this, so proceed with caution.</h6>
                     <div class="pull-right" style="margin-bottom: -15px;">
                         <button ng-click="removeImagePlant(imagePlant)" type="button" class="btn btn-link"><h6>Remove</h6></button>
                     </div>

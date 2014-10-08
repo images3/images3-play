@@ -1,13 +1,25 @@
+<div class="container-fluid" ng-init="showImagePlant()">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-2">
+            <ol class="breadcrumb">
+                <li class="active"><a ui-sref="imageplants">ImagePlants</a></li>
+                <li class="active">{{imagePlant.name}}</li>
+            </ol>
+        </div>
+    </div>
+</div>
 <div class="container-fluid">
     <div class="row"> 
-        <div class="col-sm-3 col-md-2 sidebar sidebar-fixed">
+        <div class="col-sm-2 sidebar sidebar-fixed">
             <ul class="nav nav-sidebar">
-                <li style="margin-top: 30px;">
+                <!-- 
+                <li style="margin-top: 0px;">
                     <a ui-sref="imageplants">
                         <span class="glyphicon glyphicon-home" style="margin-right: 10px;"></span>Home
                     </a>
                 </li>
-                <li ng-class="{active: $state.includes('imageplant.overview')}">
+                 -->
+                <li ng-class="{active: $state.includes('imageplant.overview')}" style="margin-top: 15px;">
                     <a ui-sref=".overview">
                         <span class="glyphicon glyphicon-dashboard" style="margin-right: 10px;"></span>Overview
                     </a>
@@ -22,14 +34,14 @@
                         <span class="glyphicon glyphicon-picture" style="margin-right: 10px;"></span>Images
                     </a>
                 </li>
-                <li ng-class="{active: $state.includes('imageplant.info')}">
-                    <a ui-sref=".info">
+                <li ng-class="{active: $state.includes('imageplant.update')}">
+                    <a ui-sref=".update">
                         <span class="glyphicon glyphicon-cog" style="margin-right: 10px;"></span>Information
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-10 col-sm-offset-2">
             <div ui-view></div>
         </div>
     </div>

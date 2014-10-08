@@ -1,7 +1,8 @@
 /**
  * 
  */
-var authRefreshImageReport = false;
+var autoRefreshImageReport = {};
+var currentImagePlantId = null;
 
 var imageS3 = angular.module('imageS3', ['ui.router', 'imageS3Controllers', 'ui.bootstrap','cgPrompt', 'cgBusy']);
 
@@ -13,7 +14,8 @@ imageS3.run(['$rootScope', '$state', '$stateParams',
 		$rootScope.$on('$locationChangeSuccess', function(event, currRoute, prevRoute) {
 			var position = currRoute.indexOf('/overview');
 			if ((position + 9) != currRoute.length) {
-				authRefreshImageReport = false;
+				autoRefreshImageReport[currentImagePlantId] = false;
+				currentImagePlantId = null;
 			}
 		});
 	}
@@ -77,9 +79,9 @@ imageS3.config(['$stateProvider', '$urlRouterProvider',
 				templateUrl: 'html/image-content.html',
 				controller: 'ImageContentController'
 			})
-			.state('imageplant.info', {
+			.state('imageplant.update', {
 				url: '/info',
-				templateUrl: 'html/imageplant-info.html',
+				templateUrl: 'html/imageplant-update.html',
 				controller: 'ImagePlantController',
 				
 			});
