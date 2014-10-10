@@ -12,23 +12,20 @@ import play.mvc.Results;
 public class DuplicateImageVersionExceptionMapper extends
         PreciseExceptionMapper {
 
-    public DuplicateImageVersionExceptionMapper(Class<?> exceptionClass,
+    public DuplicateImageVersionExceptionMapper(
             ExceptionMapper successor) {
-        super(exceptionClass, successor);
+        super(DuplicateImageVersionException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        DuplicateImageVersionException exp = (DuplicateImageVersionException) t.getCause();
-        Map<String, Object> values = new HashMap<String, Object>();
-        values.put("templateName", exp.getTemplateName());
-        values.put("originalImageId", exp.getOriginalImageId());
-        String message = "Image, " + exp.getOriginalImageId() + 
-                " has already have a version of " + exp.getTemplateName() + " exist.";
+        DuplicateImageVersionException exception = (DuplicateImageVersionException) t;
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("version", exception.getVersion());
         ErrorResponse response = new ErrorResponse(
                 ErrorResponse.DUPLICATE_IMAGE_VERSION, 
-                values, 
-                message);
+                details, 
+                exception.getMessage());
         return Results.badRequest(Json.toJson(response));
     }
 

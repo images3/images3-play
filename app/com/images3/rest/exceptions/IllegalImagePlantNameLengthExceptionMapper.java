@@ -12,24 +12,22 @@ import play.mvc.Results;
 public class IllegalImagePlantNameLengthExceptionMapper extends
         PreciseExceptionMapper {
 
-    public IllegalImagePlantNameLengthExceptionMapper(Class<?> exceptionClass,
+    public IllegalImagePlantNameLengthExceptionMapper(
             ExceptionMapper successor) {
-        super(exceptionClass, successor);
+        super(IllegalImagePlantNameLengthException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        IllegalImagePlantNameLengthException exp = (IllegalImagePlantNameLengthException) t.getCause();
-        Map<String, Object> values = new HashMap<String, Object>();
-        values.put("name", exp.getName());
-        values.put("minLength", exp.getMinLength());
-        values.put("maxLength", exp.getMaxLength());
-        String message = "Length of ImagePlant name need to be greater equal than " + exp.getMinLength()
-                + " and less equal than " + exp.getMaxLength();
+        IllegalImagePlantNameLengthException exception = (IllegalImagePlantNameLengthException) t;
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("name", exception.getName());
+        details.put("minLength", exception.getMinLength());
+        details.put("maxLength", exception.getMaxLength());
         ErrorResponse response = new ErrorResponse(
                 ErrorResponse.ILLEGAL_IMAGEPLANT_NAME_LENGTH, 
-                values, 
-                message);
+                details, 
+                exception.getMessage());
         return Results.badRequest(Json.toJson(response));
     }
 

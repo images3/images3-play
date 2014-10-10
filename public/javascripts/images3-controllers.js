@@ -34,7 +34,8 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 					$state.go('imageplants', {});
 				},
 				function(error) {
-					if (error.status == 400) {
+					if (error.status >= 400
+							&& error.status <= 417) {
 						var errorResp = error.data;
 						$scope.errorCode = errorResp.code;
 						$scope.errorMessage = errorResp.message;
@@ -96,7 +97,8 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 	    			
 				},
 				function(error) {
-					if (error.status == 400) {
+					if (error.status >= 400
+							&& error.status <= 417) {
 						var errorResp = error.data;
 						$scope.errorCode = errorResp.code;
 						$scope.errorMessage = errorResp.message;
@@ -123,7 +125,8 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 						$state.go('imageplant.templates', {});
 					},
 					function(error) {
-						if (error.status == 400) {
+						if (error.status >= 400
+								&& error.status <= 417) {
 							var errorResp = error.data;
 							$scope.errorCode = errorResp.code;
 							$scope.errorMessage = errorResp.message;

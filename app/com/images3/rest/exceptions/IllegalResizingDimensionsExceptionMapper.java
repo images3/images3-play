@@ -12,23 +12,22 @@ import play.mvc.Results;
 public class IllegalResizingDimensionsExceptionMapper extends
         PreciseExceptionMapper {
 
-    public IllegalResizingDimensionsExceptionMapper(Class<?> exceptionClass,
+    public IllegalResizingDimensionsExceptionMapper(
             ExceptionMapper successor) {
-        super(exceptionClass, successor);
-        // TODO Auto-generated constructor stub
+        super(IllegalResizingDimensionsException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        IllegalResizingDimensionsException exp = (IllegalResizingDimensionsException) t.getCause();
-        Map<String, Object> values = new HashMap<String, Object>();
-        values.put("width", exp.getWidth());
-        values.put("height", exp.getHeight());
-
+        IllegalResizingDimensionsException exception = (IllegalResizingDimensionsException) t;
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("minimum", exception.getMinimum());
+        details.put("maximum", exception.getMaximum());
+        details.put("unit", exception.getUnit().toString());
         ErrorResponse response = new ErrorResponse(
                 ErrorResponse.ILLEGAL_RESIZING_DIMENSIONS, 
-                values, 
-                exp.getMessage());
+                details, 
+                exception.getMessage());
         
         return Results.badRequest(Json.toJson(response));
     }

@@ -15,6 +15,6 @@ public abstract class PreciseExceptionMapper extends ExceptionMapper {
 
     @Override
     protected boolean isMatch(Throwable t) {
-        return (exceptionClass.equals(t.getCause().getClass()));
+        return (exceptionClass.equals(t.getClass()));
     }
 }

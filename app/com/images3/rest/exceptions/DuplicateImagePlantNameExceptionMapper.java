@@ -12,21 +12,20 @@ import play.mvc.Results;
 public class DuplicateImagePlantNameExceptionMapper extends
         PreciseExceptionMapper {
 
-    public DuplicateImagePlantNameExceptionMapper(Class<?> exceptionClass,
+    public DuplicateImagePlantNameExceptionMapper(
             ExceptionMapper successor) {
-        super(exceptionClass, successor);
-        // TODO Auto-generated constructor stub
+        super(DuplicateImagePlantNameException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        DuplicateImagePlantNameException exp = (DuplicateImagePlantNameException) t.getCause();
+        DuplicateImagePlantNameException exception = (DuplicateImagePlantNameException) t;
         Map<String, Object> details = new HashMap<String, Object>();
-        details.put("name", exp.getName());
+        details.put("name", exception.getName());
         ErrorResponse response = new ErrorResponse(
                 ErrorResponse.DUPLICATE_IMAGEPLANT_NAME, 
                 details, 
-                "ImagePlant name, " + exp.getName() + " has been taken.");
+                exception.getMessage());
         return Results.badRequest(Json.toJson(response));
     }
 

@@ -1,32 +1,30 @@
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.images3.ImageS3;
-import com.images3.exceptions.AmazonS3BucketAccessFailedException;
-import com.images3.exceptions.IllegalResizingDimensionsException;
-import com.images3.exceptions.IllegalTemplateNameException;
-import com.images3.exceptions.IllegalTemplateNameLengthException;
-import com.images3.exceptions.NoSuchEntityFoundException;
-import com.images3.exceptions.UnknownImageFormatException;
-import com.images3.exceptions.UnremovableTemplateException;
-import com.images3.rest.exceptions.ErrorResponse;
+import com.images3.rest.exceptions.AmazonS3BucketAccessFailedExceptionMapper;
+import com.images3.rest.exceptions.DuplicateImagePlantNameExceptionMapper;
+import com.images3.rest.exceptions.DuplicateImageVersionExceptionMapper;
+import com.images3.rest.exceptions.DuplicateTemplateNameExceptionMapper;
 import com.images3.rest.exceptions.ExceptionMapper;
-import com.images3.rest.exceptions.PreciseExceptionMapper;
+import com.images3.rest.exceptions.IllegalImagePlantNameLengthExceptionMapper;
+import com.images3.rest.exceptions.IllegalResizingDimensionsExceptionMapper;
+import com.images3.rest.exceptions.IllegalTemplateNameExceptionMapper;
+import com.images3.rest.exceptions.IllegalTemplateNameLengthExceptionMapper;
+import com.images3.rest.exceptions.NoSuchEntityFoundExceptionMapper;
+import com.images3.rest.exceptions.UnachievableTemplateExceptionMapper;
+import com.images3.rest.exceptions.UnremovableTemplateExceptionMapper;
+import com.images3.rest.exceptions.UnsupportedImageFormatExceptionMapper;
 
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
 import play.libs.F.Promise;
-import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Http;
-import play.mvc.Results;
 
 public class Global extends GlobalSettings {
 
@@ -53,118 +51,18 @@ public class Global extends GlobalSettings {
     }
     
     private void initExceptionHandlers() {
-   
-        exceptionHandler = new PreciseExceptionMapper(IllegalResizingDimensionsException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                IllegalResizingDimensionsException exp = (IllegalResizingDimensionsException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("width", exp.getWidth());
-                values.put("height", exp.getHeight());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.ILLEGAL_RESIZING_DIMENSIONS, 
-                        values, 
-                        exp.getMessage());
-                
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionMapper(IllegalTemplateNameException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                IllegalTemplateNameException exp = (IllegalTemplateNameException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("name", exp.getName());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.ILLEGAL_TEMPLATE_NAME, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionMapper(IllegalTemplateNameLengthException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                IllegalTemplateNameLengthException exp = (IllegalTemplateNameLengthException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("name", exp.getName());
-                values.put("minLength", exp.getMinLength());
-                values.put("maxLength", exp.getMaxLength());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.ILLEGAL_TEMPLATE_NAME_LENGTH, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionMapper(NoSuchEntityFoundException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                NoSuchEntityFoundException exp = (NoSuchEntityFoundException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("entity", exp.getEntity());
-                values.put("id", exp.getId());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.NO_SUCH_ENTITY, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionMapper(UnknownImageFormatException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                UnknownImageFormatException exp = (UnknownImageFormatException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("imageId", exp.getImageId());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.UNKNOWN_IMAGE_FORMAT, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-            
-        };
-        exceptionHandler = new PreciseExceptionMapper(UnremovableTemplateException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                UnremovableTemplateException exp = (UnremovableTemplateException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("imagePlantId", exp.getId().getImagePlantId());
-                values.put("templateName", exp.getId().getTemplateName());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.UNREMOVABLE_TEMPLATE, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-        };
-        exceptionHandler = new PreciseExceptionMapper(AmazonS3BucketAccessFailedException.class, exceptionHandler) {
-
-            @Override
-            protected Result getResult(Throwable t) {
-                AmazonS3BucketAccessFailedException exp = (AmazonS3BucketAccessFailedException) t.getCause();
-                Map<String, Object> values = new HashMap<String, Object>();
-                values.put("name", exp.getBucket().getName());
-                values.put("accessKey", exp.getBucket().getAccessKey());
-                values.put("secretKey", exp.getBucket().getSecretKey());
-                ErrorResponse response = new ErrorResponse(
-                        ErrorResponse.AMAZONS3_BUCKET_ACCESS_FAILED, 
-                        values, 
-                        exp.getMessage());
-                return Results.badRequest(Json.toJson(response));
-            }
-        };
+        exceptionHandler = new AmazonS3BucketAccessFailedExceptionMapper(null);
+        exceptionHandler = new DuplicateImagePlantNameExceptionMapper(exceptionHandler);
+        exceptionHandler = new DuplicateImageVersionExceptionMapper(exceptionHandler);
+        exceptionHandler = new DuplicateTemplateNameExceptionMapper(exceptionHandler);
+        exceptionHandler = new IllegalImagePlantNameLengthExceptionMapper(exceptionHandler);
+        exceptionHandler = new IllegalResizingDimensionsExceptionMapper(exceptionHandler);
+        exceptionHandler = new IllegalTemplateNameLengthExceptionMapper(exceptionHandler);
+        exceptionHandler = new IllegalTemplateNameExceptionMapper(exceptionHandler);
+        exceptionHandler = new NoSuchEntityFoundExceptionMapper(exceptionHandler);
+        exceptionHandler = new UnachievableTemplateExceptionMapper(exceptionHandler);
+        exceptionHandler = new UnremovableTemplateExceptionMapper(exceptionHandler);
+        exceptionHandler = new UnsupportedImageFormatExceptionMapper(exceptionHandler);
     }
 
     public void onStop(Application app) {
@@ -176,7 +74,8 @@ public class Global extends GlobalSettings {
     }
     
     public Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-        return Promise.<Result>pure(exceptionHandler.toResult(t));
+        Throwable excep = (t.getCause() == null ? t : t.getCause());
+        return Promise.<Result>pure(exceptionHandler.toResult(excep));
     }
     
     //public Promise<Result> onHandlerNotFound(Http.RequestHeader request) {

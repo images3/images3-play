@@ -3,27 +3,26 @@ package com.images3.rest.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.images3.exceptions.DuplicateTemplateNameException;
+import com.images3.exceptions.UnsupportedImageFormatException;
 
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Results;
 
-public class DuplicateTemplateNameExceptionMapper extends
+public class UnsupportedImageFormatExceptionMapper extends
         PreciseExceptionMapper {
 
-    public DuplicateTemplateNameExceptionMapper(
+    public UnsupportedImageFormatExceptionMapper(
             ExceptionMapper successor) {
-        super(DuplicateTemplateNameException.class, successor);
+        super(UnsupportedImageFormatException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        DuplicateTemplateNameException exception = (DuplicateTemplateNameException) t;
+        UnsupportedImageFormatException exception = (UnsupportedImageFormatException) t;
         Map<String, Object> details = new HashMap<String, Object>();
-        details.put("name", exception.getName());
         ErrorResponse response = new ErrorResponse(
-                ErrorResponse.DUPLICATE_TEMPALTE_NAME, 
+                ErrorResponse.UNSUPPORTED_IMAGE_FORMAT, 
                 details, 
                 exception.getMessage());
         return Results.badRequest(Json.toJson(response));

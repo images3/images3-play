@@ -3,27 +3,26 @@ package com.images3.rest.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.images3.exceptions.DuplicateTemplateNameException;
+import com.images3.exceptions.UnremovableTemplateException;
 
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Results;
 
-public class DuplicateTemplateNameExceptionMapper extends
-        PreciseExceptionMapper {
+public class UnremovableTemplateExceptionMapper extends PreciseExceptionMapper {
 
-    public DuplicateTemplateNameExceptionMapper(
+    public UnremovableTemplateExceptionMapper(
             ExceptionMapper successor) {
-        super(DuplicateTemplateNameException.class, successor);
+        super(UnremovableTemplateException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        DuplicateTemplateNameException exception = (DuplicateTemplateNameException) t;
+        UnremovableTemplateException exception = (UnremovableTemplateException) t;
         Map<String, Object> details = new HashMap<String, Object>();
-        details.put("name", exception.getName());
+        details.put("id", exception.getId());
         ErrorResponse response = new ErrorResponse(
-                ErrorResponse.DUPLICATE_TEMPALTE_NAME, 
+                ErrorResponse.UNREMOVABLE_TEMPLATE, 
                 details, 
                 exception.getMessage());
         return Results.badRequest(Json.toJson(response));
