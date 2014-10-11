@@ -155,7 +155,7 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 	    $scope.removeTemplate = function(template) {
 	    	prompt({
 				"title": "Do you want to continue to remove this template?",
-				"message": "After remove this template, there is no way to undo this.",
+				"message": "After removing this template, there is no way to undo this.",
 				"buttons": [
 					{
 						"label": "Continue",

@@ -11,6 +11,7 @@ import com.images3.rest.exceptions.DuplicateImageVersionExceptionMapper;
 import com.images3.rest.exceptions.DuplicateTemplateNameExceptionMapper;
 import com.images3.rest.exceptions.ExceptionMapper;
 import com.images3.rest.exceptions.IllegalImagePlantNameLengthExceptionMapper;
+import com.images3.rest.exceptions.IllegalImageVersioningExceptionMapper;
 import com.images3.rest.exceptions.IllegalResizingDimensionsExceptionMapper;
 import com.images3.rest.exceptions.IllegalTemplateNameExceptionMapper;
 import com.images3.rest.exceptions.IllegalTemplateNameLengthExceptionMapper;
@@ -63,6 +64,7 @@ public class Global extends GlobalSettings {
         exceptionHandler = new UnachievableTemplateExceptionMapper(exceptionHandler);
         exceptionHandler = new UnremovableTemplateExceptionMapper(exceptionHandler);
         exceptionHandler = new UnsupportedImageFormatExceptionMapper(exceptionHandler);
+        exceptionHandler = new IllegalImageVersioningExceptionMapper(exceptionHandler);
     }
 
     public void onStop(Application app) {

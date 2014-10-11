@@ -114,4 +114,10 @@ public class ImageController extends Controller {
         String respJson = objectMapper.writeValueAsString(response);
         return ok(respJson);
     }
+    
+    public Result deleteImage(String imagePlantId, String imageId) {
+        imageS3.deleteImage(new ImageIdentity(imagePlantId, imageId));
+        return status(204);
+    }
+    
 }

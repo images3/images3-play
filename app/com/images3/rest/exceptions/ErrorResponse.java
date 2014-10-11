@@ -17,6 +17,7 @@ public class ErrorResponse {
     public static final int UNREMOVABLE_TEMPLATE = 400109;
     public static final int AMAZONS3_BUCKET_ACCESS_FAILED = 400110;
     public static final int UNARCHIVABLE_TEMPLATE = 400111;
+    public static final int ILLEGAL_IMAGE_VERSIONG = 400112;
 
     private int code;
     private Map<String, Object> details;

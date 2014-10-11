@@ -20,7 +20,7 @@
 				    <div class="col-sm-6">
                         <input ng-model="template.name" type="text" class="form-control" id="inputName" placeholder="Template Name">
 				    </div>
-				    <div class="col-sm-offset-3 col-sm-12 {{(errorCode==400103 || errorCode==400106 || errorCode==400107) ? 'hide' : ''}}">
+				    <div class="col-sm-offset-3 col-sm-12 {{(errorCode!=400103 && errorCode!=400106 && errorCode!=400107) ? 'hide' : ''}}">
                         <span class="help-block">{{errorMessage}}</span>
                     </div>
                 </div>
