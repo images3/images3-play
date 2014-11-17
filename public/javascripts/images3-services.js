@@ -25,9 +25,9 @@ imageS3Services.factory('ImagePlants', ['$resource', function($resource) {
 			null,
 			{
 				getAll: {
-						url: '/rest/v1/imageplants?page=:cursor',
+						url: '/rest/v1/imageplants?page=:pageId',
 						method: 'GET',
-						params:{cursor: '@cursor'},
+						params:{pageId: '@pageId'},
 						isArray: false},
 				getById: {
 						url: '/rest/v1/imageplants/:id',
@@ -70,9 +70,13 @@ imageS3Services.factory('Templates', ['$resource', function($resource) {
 			null,
 			{
 				getByImagePlantId: {
-						url: '/rest/v1/imageplants/:id/templates',
+						url: '/rest/v1/imageplants/:id/templates?page=:pageId&archived=:isArchived',
 						method: 'GET',
-						params:{id: '@id'},
+						params:{
+							id: '@id',
+							pageId: '@pageId',
+							isArchived: '@isArchived'
+						},
 						isArray: false},
 				getByName: {
 					url: '/rest/v1/imageplants/:id/templates/:name',
@@ -116,9 +120,11 @@ imageS3Services.factory('Images', ['$resource', function($resource) {
 			null,
 			{
 				getByImagePlantId: {
-						url: '/rest/v1/imageplants/:id/images',
+						url: '/rest/v1/imageplants/:id/images?page=:pageId&template=:template',
 						method: 'GET',
 						params:{id: '@id'},
+						params:{pageId: '@pageId'},
+						params:{template: '@template'},
 						isArray: false}
 			});
 }]);

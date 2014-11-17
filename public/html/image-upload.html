@@ -1,0 +1,42 @@
+<div cg-busy="{promise:myPromise,message:'Uploading...',backdrop:true,templateUrl:'html/custom-busy-template.html', delay:100,minDuration:700}">
+<div class="container-fluid">
+    <div class="row" >
+        <div class="col-sm-12 col-md-12">
+            <div style="border-bottom:1px solid #ddd">
+                <div class="row" style="position: relative;">
+                    <div class="col-sm-6 col-md-6" >
+                        <div style="margin-bottom: 20px;">
+                          <h3>Upload Image</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-8" style="margin-top: 40px;">
+            <div flow-init="{singleFile:true, chunkSize: 100 * 1024 * 1024}" flow-file-added="!!{png:1,jpg:1,jpeg:1,bmp:1}[$file.getExtension()]" flow-name="image.flow">
+                <div class="thumbnail" ng-show="!$flow.files.length">
+                    <img class="img-responsive" src="http://www.placehold.it/500x350/EFEFEF/AAAAAA&amp;text=no+image">
+                </div>
+                <div class="thumbnail ng-hide" ng-show="$flow.files.length">
+                    <img flow-img="$flow.files[0]">
+                </div>
+                <div class="alert alert-danger {{errorCode!=400108 ? 'hide' : ''}}">
+                        {{errorMessage}}
+                </div>
+	            <div ng-hide="uploadStarted">
+                    <button ng-click="viewImages($stateParams.page, $stateParams.template)" class="btn btn-default">Back</button>
+                    <span style="margin-right: 40px;"></span>
+                    <span class="btn btn-primary" ng-show="!$flow.files.length" flow-btn>Select image<input type="file" style="visibility: hidden; position: absolute;"></span>
+	                <span ng-click="errorCode = 0" class="btn btn-default ng-hide" ng-show="$flow.files.length" flow-btn>Change<input type="file" style="visibility: hidden; position: absolute;"></span>
+	                <span style="margin-right: 10px;"></span>
+	                <span ng-click="uploadImage($flow)" class="btn btn-primary ng-hide" ng-show="$flow.files.length">Upload</span>
+				</div>
+				<div class="alert alert-warning" ng-show="uploadStarted">
+                        Image uploading...
+                </div>
+			</div>
+        </div>
+    </div>
+</div>

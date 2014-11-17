@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-/**
- * 
- */
 
 var imageS3Controllers = angular.module('imageS3Controllers', ['imageS3Services']);
 
@@ -31,9 +28,10 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 			$state.go('imageplant.overview', {imagePlantId: imagePlant.id});
 		}
 		
-		$scope.showImagePlants = function() {
-			ImagePlants.getAll({cursor: null}, function(response) {
+		$scope.showImagePlants = function(pageId) {
+			ImagePlants.getAll({pageId: pageId}, function(response) {
 				$scope.imagePlants = response.results;
+				$scope.page = response.page;
 			})
 		}
 	
@@ -137,7 +135,7 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 					{imagePlantId: $stateParams.imagePlantId},
 					template,
 					function(response) {
-						$state.go('imageplant.templates', {});
+						$scope.viewTemplates($stateParams.page, $stateParams.archived);
 					},
 					function(error) {
 						if (error.status >= 400
@@ -150,21 +148,36 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 			);
 		}
 		
-		$scope.showTemplate = function() {
-			Templates.getByName({id: $stateParams.imagePlantId, name: $stateParams.templateName}, 
+		$scope.viewTemplate = function(template, page, archived) {
+			$state.go('imageplant.template-update', {templateName: template, page:page, archived:archived}, {location: false});
+		}
+		
+		$scope.loadTemplate = function(templateName) {
+			Templates.getByName({id: $stateParams.imagePlantId, name: templateName}, 
 					function(response) {
 				$scope.template = response;
 			})
 		}
-
-	    $scope.showTemplates = function () {
-			Templates.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
+		
+		$scope.viewTemplates = function(page, isArchived) {
+			if ((typeof(isArchived) === 'undefined')) {
+				isArchived = '';
+			}
+			if ((typeof(page) === 'undefined')) {
+				page = '';
+			}
+			$state.go('imageplant.templates', {page: page, archived: isArchived});
+		}
+	    
+	    $scope.loadTemplates = function (page, isArchived) {
+			Templates.getByImagePlantId({id: $stateParams.imagePlantId, pageId: page, isArchived: isArchived}, function(response) {
 				$scope.templates = response.results;
+				$scope.page = response.page;
 			})
 		}
 	    
-	    $scope.viewTemplate = function(template) {
-			$state.go('imageplant.template-update', {templateName: template.id.templateName});
+	    $scope.viewCreateTemplate = function(page, archived) {
+			$state.go('imageplant.template-create', {page: page, archived: archived}, {location: false});
 		}
 	    
 	    $scope.removeTemplate = function(template) {
@@ -185,7 +198,7 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 				if (result.primary) {
 					Templates.remove({imagePlantId: template.id.imagePlantId, templateName: template.id.templateName}, 
 							function(response) {
-					    		$state.go('imageplant.templates', {});
+								$scope.viewTemplates($stateParams.page, $stateParams.archived);
 							}
 			    	)
 				}
@@ -236,32 +249,84 @@ imageS3Controllers.controller('TemplateController', ['$scope', '$state', '$state
 					}
 				});
 	    	}
-	    	
-	    	
 		}
-	    
 	}
 ]);
 
-imageS3Controllers.controller('ImageListController', ['$scope', '$state', '$stateParams', 'Images', 
-    function ($scope, $state, $stateParams, Images) {
+
+imageS3Controllers.controller('ImageController', ['$scope', '$state', '$stateParams', '$modal', 'Images', 
+    function ($scope, $state, $stateParams, $modal, Images) {
+		$scope.errorCode = 0;
+		$scope.errorMessage = '';
+		$scope.uploadStarted = false;
 		
-		Images.getByImagePlantId({id: $stateParams.imagePlantId}, function(response) {
-			$scope.images = response.results;
-		
-			$scope.viewImageContent = function(image) {
-				$state.go('imageplant.images.imagecontent',{imageId: image.id.imageId});
+		$scope.viewImages = function(pageId, templateName) {
+			$state.go('imageplant.images', {page: pageId, template: templateName});
+		}
+	
+		$scope.loadImages = function () {
+			if ((typeof($stateParams.template) === 'undefined')) {
+				$stateParams.template = 'master';
 			}
-		})
-	}
-]);
-
-imageS3Controllers.controller('ImageContentController', ['$scope', '$state', '$stateParams', 
-    function ($scope, $state, $stateParams) {
+			if ((typeof($stateParams.page) === 'undefined')) {
+				$stateParams.page = '';
+			}
+			Images.getByImagePlantId({id: $stateParams.imagePlantId, pageId: $stateParams.page, template: $stateParams.template}, function(response) {
+				$scope.images = response.results;
+				$scope.page = response.page;
+			})
+		}
 		
-		$scope.loadImageContent = function() {
-			$scope.imagePlantId = $stateParams.imagePlantId;
-			$scope.imageId = $stateParams.imageId;
+		$scope.viewImageContent = function(imageId, template, currentPage) {
+			$stateParams.imageId = imageId;
+			$stateParams.template = template;
+			var imageContentModal = $modal.open({
+				url: '/images/:imageId?template',
+				templateUrl: 'html/image-content.html',
+				controller: 'ImageController',
+				resolve: {
+					$stateParams: function() {
+						return $stateParams;
+					}
+				}
+			});
+		}
+		
+		$scope.viewUploadImage = function(pageId, templateName) {
+			$state.go('imageplant.images-upload', {page: pageId, template: templateName}, {location: false});
+		}
+		
+		$scope.loadImageContent = function(template) {
+			if (! (typeof(template) === 'undefined')) {
+				$stateParams.template = template;
+			}
+			if (typeof($stateParams.template) === 'undefined') {
+				$stateParams.template = '';
+			}
+			$scope.imageContent = '/rest/v1/imageplants/' + $stateParams.imagePlantId + '/imagefiles/' + $stateParams.imageId + '?template=' + $stateParams.template;
+			$scope.currentTemplate = $stateParams.template;
+		}
+		
+		$scope.uploadImage = function($flow) {
+			$flow.opts.testChunks = false;
+			$flow.opts.simultaneousUploads = 1;
+			$flow.opts.forceChunkSize = false;
+			$flow.opts.method = "octet";
+			$flow.opts.target = "/rest/v1/imageplants/" + $stateParams.imagePlantId + "/images";
+			$flow.upload();
+			$scope.uploadStarted = true;
+            $flow.on('fileSuccess', function (file,message) {
+            	$scope.uploadStarted = false;
+            	$scope.viewImages($stateParams.page, $stateParams.template);
+            });
+            $flow.on('fileError', function (file,message) {
+            	$scope.uploadStarted = false;
+            	var data = angular.fromJson(message);
+            	$scope.errorCode = data.code;
+            	if (data.code == 400108) {
+            		$scope.errorMessage = "Unsupported image format found!";
+            	}
+            });
 		}
 		
 	}
