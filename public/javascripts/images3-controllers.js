@@ -303,8 +303,18 @@ imageS3Controllers.controller('ImageController', ['$scope', '$state', '$statePar
 			if (typeof($stateParams.template) === 'undefined') {
 				$stateParams.template = '';
 			}
-			$scope.imageContent = '/rest/v1/imageplants/' + $stateParams.imagePlantId + '/imagefiles/' + $stateParams.imageId + '?template=' + $stateParams.template;
-			$scope.currentTemplate = $stateParams.template;
+			$scope.uploadStarted = true;
+			Images.getByVersion({id: $stateParams.imagePlantId, imageId: $stateParams.imageId, template: $stateParams.template}, 
+					function(response) {
+						$scope.uploadStarted = false;
+						$scope.imageContent = '/rest/v1/imageplants/' + $stateParams.imagePlantId + '/imagefiles/' + $stateParams.imageId + '?template=' + $stateParams.template;
+						$scope.currentTemplate = $stateParams.template;
+					},
+					function(error) {
+						$scope.uploadStarted = false;
+					}
+			)
+			
 		}
 		
 		$scope.uploadImage = function($flow) {

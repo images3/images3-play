@@ -125,7 +125,14 @@ imageS3Services.factory('Images', ['$resource', function($resource) {
 						params:{id: '@id'},
 						params:{pageId: '@pageId'},
 						params:{template: '@template'},
-						isArray: false}
+						isArray: false},
+				getByVersion: {
+					url: '/rest/v1/imageplants/:id/images/:imageId?template=:template',
+					method: 'GET',
+					params:{id: '@id'},
+					params:{imageId: '@imageId'},
+					params:{template: '@template'},
+					isArray: false}
 			});
 }]);
 

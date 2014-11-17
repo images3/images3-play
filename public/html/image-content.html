@@ -5,9 +5,13 @@
         <img class="img-responsive" ng-src="{{imageContent}}"/>
     </div>
     <div class="modal-footer" ng-controller="TemplateController" ng-init="loadTemplates('ALL', 'false')">
-        
-        <span ng-repeat="template in templates" ng-click="loadImageContent(template.id.templateName)">
-            <button type="button" class="btn {{currentTemplate===template.id.templateName? 'disabled':'btn-default' }}">{{template.id.templateName}}</button>
-        </span>
+        <div ng-hide="uploadStarted">
+            <span ng-repeat="template in templates" ng-click="loadImageContent(template.id.templateName)">
+                <button type="button" class="btn {{currentTemplate===template.id.templateName? 'disabled':'btn-default' }}">{{template.id.templateName}}</button>
+            </span>
+        </div>
+        <div class="alert alert-warning" ng-show="uploadStarted">
+            Image loading...
+        </div>
     </div>
 </div>
