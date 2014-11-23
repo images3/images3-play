@@ -41,4 +41,14 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 main">
+            <nav>
+                <ul class="pager">
+                    <li class="previous {{page.prev != null ? '' : 'disabled'}}"><a href="" ng-click="showImagePlants(page.prev)">&larr; Previous</a></li>
+                    <li class="next {{page.next != null ? '' : 'disabled'}}"><a href="" ng-click="showImagePlants(page.next)">Next &rarr;</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>

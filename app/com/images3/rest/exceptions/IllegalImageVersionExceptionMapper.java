@@ -18,23 +18,23 @@ package com.images3.rest.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.images3.exceptions.IllegalImageVersioningException;
+import com.images3.exceptions.IllegalImageVersionException;
 
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Results;
 
-public class IllegalImageVersioningExceptionMapper extends
+public class IllegalImageVersionExceptionMapper extends
         PreciseExceptionMapper {
 
-    public IllegalImageVersioningExceptionMapper(
+    public IllegalImageVersionExceptionMapper(
             ExceptionMapper successor) {
-        super(IllegalImageVersioningException.class, successor);
+        super(IllegalImageVersionException.class, successor);
     }
 
     @Override
     protected Result getResult(Throwable t) {
-        IllegalImageVersioningException exception = (IllegalImageVersioningException) t;
+        IllegalImageVersionException exception = (IllegalImageVersionException) t;
         Map<String, Object> details = new HashMap<String, Object>();
         details.put("version", exception.getVersion());
         ErrorResponse response = new ErrorResponse(

@@ -52,26 +52,26 @@ public class ImageController extends Controller {
         return ok(respJson);
     }
     
-    public Result getImageContent(String imagePlantId, String imageId, String template) throws IOException {
-        if (null == template) {
-            return getImageContent(imagePlantId, imageId);
+    public Result getImageFile(String imagePlantId, String imageId, String template) throws IOException {
+        if (isEmptyTemplate(template)) {
+            return getImageFile(imagePlantId, imageId);
         } else {
-            return getImageContentWithTemplate(imagePlantId, imageId, template);
+            return getImageFileWithTemplate(imagePlantId, imageId, template);
         }
     }
     
-    private Result getImageContent(String imagePlantId, String imageId) throws IOException {
+    private Result getImageFile(String imagePlantId, String imageId) throws IOException {
         File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId));
         return ok(content, content.getName()); 
     }
 
-    private Result getImageContentWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
+    private Result getImageFileWithTemplate(String imagePlantId, String imageId, String templateName) throws IOException {
         File content = imageS3.getImageContent(new ImageIdentity(imagePlantId, imageId), templateName);
         return ok(content, content.getName()); 
     }
 
     public Result getImage(String imagePlantId, String imageId, String template) throws IOException {
-        if (null == template) {
+        if (isEmptyTemplate(template)) {
             return getImage(imagePlantId, imageId);
         } else {
             return getImageWithTemplate(imagePlantId, imageId, template);
@@ -91,7 +91,7 @@ public class ImageController extends Controller {
     }
     
     public Result getImages(String imagePlantId, String page, String template) throws IOException {
-        if (null == template) {
+        if (isEmptyTemplate(template)) {
             return getImages(imagePlantId, page);
         } else {
             return getImagesByTemplate(imagePlantId, template, page);
@@ -133,6 +133,10 @@ public class ImageController extends Controller {
     public Result deleteImage(String imagePlantId, String imageId) {
         imageS3.deleteImage(new ImageIdentity(imagePlantId, imageId));
         return status(204);
+    }
+    
+    private boolean isEmptyTemplate(String template) {
+        return (null == template || template.trim().length() == 0);
     }
     
 }
