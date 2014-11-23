@@ -2,7 +2,7 @@ lazy val root = project.in(file(".")).enablePlugins(PlayJava)
 
 name := """images3-play"""
 
-version := "0.2.0-SNAPSHOT"
+version := "0.2.1-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   "com.google.inject" % "guice" % "3.0",
