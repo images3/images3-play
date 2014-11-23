@@ -73,18 +73,24 @@ public class TemplateController extends Controller {
         return status(204);
     }
     
-    public Result getTemplates(String id, String page) throws IOException {
-        PaginatedResult<List<TemplateResponse>> pages = imageS3.getAllTemplates(id);
-        return getPaginatedResultResponse(pages, page);
-    }
-    
-    public Result getActiveTemplates(String id, String page) throws IOException {
-        PaginatedResult<List<TemplateResponse>> pages = imageS3.getActiveTempaltes(id);
-        return getPaginatedResultResponse(pages, page);
-    }
-    
-    public Result getArchivedTemplates(String id, String page) throws IOException {
-        PaginatedResult<List<TemplateResponse>> pages = imageS3.getArchivedTemplates(id);
+    public Result getTemplates(String id, String page, String archived) throws IOException {
+        PaginatedResult<List<TemplateResponse>> pages = null;
+        if (null == archived || archived.trim().length() == 0) {
+            pages = imageS3.getAllTemplates(id);
+        } else if ("false".equalsIgnoreCase(archived)) {
+            pages = imageS3.getActiveTempaltes(id);
+        } else if ("true".equalsIgnoreCase(archived)) {
+            pages = imageS3.getArchivedTemplates(id);
+        } else {
+            return internalServerError("'archived' must be true or false.");
+        }
+        if (page.equalsIgnoreCase("ALL")) {
+            List<TemplateResponse> templates = pages.getAllResults();
+            PaginatedResultModel<List<TemplateResponse>> response = 
+                    new PaginatedResultModel<List<TemplateResponse>>(null, null, templates);
+            String respJson = objectMapper.writeValueAsString(response);
+            return ok(respJson);
+        }
         return getPaginatedResultResponse(pages, page);
     }
     

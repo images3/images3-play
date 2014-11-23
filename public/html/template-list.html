@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-init="showTemplates()">
+<div class="container-fluid" ng-init="loadTemplates($stateParams.page, $stateParams.archived)">
     <div class="row" >
         <div class="col-sm-12 col-md-12">
             <div style="border-bottom:1px solid #ddd">
@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-sm-6 col-md-6 valign-bottom">
                     <div class="pull-right" style="margin-bottom: 15px;">
-                        <button type="button" class="btn btn-primary" ng-click="$state.go('imageplant.template-create', {})">Create Template</button>
+                        <button type="button" class="btn btn-primary" ng-click="viewCreateTemplate($stateParams.page, $stateParams.archived)">Create Template</button>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
 			            <th>Removable</th>
 			        </tr>
 			    </thead>
-			    <tbody ng-repeat="template in templates" ng-click="viewTemplate(template)">
+			    <tbody ng-repeat="template in templates" ng-click="viewTemplate(template.id.templateName, $stateParams.page, $stateParams.archived)">
 			        <tr>
 			            <td>{{template.id.templateName}}</td>
 			            <td>{{template.resizingConfig.width}}</td>
@@ -43,6 +43,16 @@
 			        </tr>
 			    </tbody>
 			</table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12"  style="margin-top: 10px;">
+            <nav>
+                <ul class="pager">
+                    <li class="previous {{page.prev != null ? '' : 'disabled'}}"><a href="" ng-click="viewTemplates(page.prev, '')">&larr; Previous</a></li>
+                    <li class="next {{page.next != null ? '' : 'disabled'}}"><a href="" ng-click="viewTemplates(page.next, '')">Next &rarr;</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

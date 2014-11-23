@@ -1,17 +1,17 @@
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-init="loadImageContent();">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">&nbsp;</h4>
-            </div>
-            <div class="modal-body">
-                <img class="img-responsive" ng-src="http://localhost:9000/rest/v1/imageplants/{{imagePlantId}}/images/{{imageId}}/content">
-            </div>
-            <div class="modal-footer">
-            
-            </div>
+<div class="modal-content">
+    <div class="modal-header">
+    </div>
+    <div class="modal-body" ng-init="loadImageContent();">
+        <img class="img-responsive" ng-src="{{imageContent}}"/>
+    </div>
+    <div class="modal-footer" ng-controller="TemplateController" ng-init="loadTemplates('ALL', 'false')">
+        <div ng-hide="uploadStarted">
+            <span ng-repeat="template in templates" ng-click="loadImageContent(template.id.templateName)">
+                <button type="button" class="btn {{currentTemplate===template.id.templateName? 'disabled':'btn-default' }}">{{template.id.templateName}}</button>
+            </span>
+        </div>
+        <div class="alert alert-warning" ng-show="uploadStarted">
+            Image loading...
         </div>
     </div>
 </div>

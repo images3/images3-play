@@ -1,18 +1,23 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-init="loadImages()">
     <div class="row" >
         <div class="col-sm-12 col-md-12">
             <div style="border-bottom:1px solid #ddd">
                 <div class="row" style="position: relative;">
-                    <div class="col-sm-6 col-md-6" >
+                    <div class="col-sm-1" >
                         <div style="margin-bottom: 20px;">
                           <h3>Images</h3>
                         </div>
                     </div>
+                    <div class="col-sm-6 valign-bottom">
+                        <div class="pull-right" style="margin-bottom: 15px;">
+                            <button type="button" class="btn btn-primary" ng-click="viewUploadImage($stateParams.page, $stateParams.template)">Upload Image</button>
+                        </div>
+	                </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-init="showImages(null, 'master')">
         <div class="col-sm-12 col-md-12"  style="margin-top: 20px;">
             <table class="table table-hover">
 			    <thead>
@@ -22,23 +27,32 @@
 			            <th>Height</th>
 			            <th>Format</th>
 			            <th>Size (bytes)</th>
-			            <th>Version</th>
+			            <!-- <th>Version</th> -->
 			            <th>Uploaded Time</th>
 			        </tr>
 			    </thead>
-			    <tbody ng-repeat="image in images" ng-click="viewImageContent(image)">
-			        <tr data-toggle="modal" data-target="#myModal">
+			    <tbody ng-repeat="image in images" ng-click="viewImageContent(image.id.imageId, image.version.templateName, $stateParams.page)">
+			        <tr>
 			            <td>{{image.id.imageId}}</td>
 			            <td>{{image.metadata.dimension.width}}px</td>
 			            <td>{{image.metadata.dimension.height}}px</td>
 			            <td>{{image.metadata.format}}</td>
 			            <td>{{image.metadata.size}}</td>
-			            <td>{{image.version.templateName}}</td>
+			            <!-- <td>{{image.version.templateName}}</td> -->
 			            <td>{{image.dateTime | date:'medium'}}</td>
-			            <div ui-view></div>
 			        </tr>
 			    </tbody>
 			</table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12"  style="margin-top: 10px;">
+            <nav>
+                <ul class="pager">
+                    <li class="previous {{page.prev != null ? '' : 'disabled'}}"><a href="" ng-click="viewImages(page.prev, 'master')">&larr; Previous</a></li>
+                    <li class="next {{page.next != null ? '' : 'disabled'}}"><a href="" ng-click="viewImages(page.next, 'master')">Next &rarr;</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

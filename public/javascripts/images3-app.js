@@ -19,7 +19,7 @@
 var autoRefreshImageReport = {};
 var currentImagePlantId = null;
 
-var imageS3 = angular.module('imageS3', ['ui.router', 'imageS3Controllers', 'ui.bootstrap','cgPrompt', 'cgBusy']);
+var imageS3 = angular.module('imageS3', ['ui.router', 'imageS3Controllers', 'ui.bootstrap','cgPrompt', 'cgBusy', 'flow']);
 
 
 imageS3.run(['$rootScope', '$state', '$stateParams', 
@@ -42,7 +42,7 @@ imageS3.config(['$stateProvider', '$urlRouterProvider',
 		
 		$stateProvider
 			.state('imageplants', {
-				url: '/imageplants',
+				url: '/imageplants?page',
 				templateUrl: 'html/imageplant-list.html',
 				controller: 'ImagePlantController'
 			})
@@ -70,35 +70,38 @@ imageS3.config(['$stateProvider', '$urlRouterProvider',
 				}
 			})
 			.state('imageplant.templates', {
-				url: '/templates',
+				url: '/templates?page&archived',
 				templateUrl: 'html/template-list.html',
 				controller: 'TemplateController'
 			})
 			.state('imageplant.template-create', {
-				url: '/template-create',
+				url: '/createTemplate?page&archived',
 				templateUrl: 'html/template-create.html',
 				controller: 'TemplateController'
 			})
 			.state('imageplant.template-update', {
-				url: '/template-update/:templateName',
+				url: '/templates/:templateName?page&archived',
 				templateUrl: 'html/template-update.html',
 				controller: 'TemplateController'
 			})
 			.state('imageplant.images', {
-				url: '/images',
+				url: '/images?page&template',
 				templateUrl: 'html/image-list.html',
-				controller: 'ImageListController'
+				controller: 'ImageController'
 			})
-			.state('imageplant.images.imagecontent', {
-				url: '/:imageId/imagecontent',
+			.state('imageplant.imagecontent', {
+				url: '/images/:imageId?template',
 				templateUrl: 'html/image-content.html',
-				controller: 'ImageContentController'
+				controller: 'ImageController'
+			})
+			.state('imageplant.images-upload', {
+				url: '/uploadImage?page&template',
+				templateUrl: 'html/image-upload.html',
+				controller: 'ImageController'
 			})
 			.state('imageplant.update', {
-				url: '/info',
 				templateUrl: 'html/imageplant-update.html',
 				controller: 'ImagePlantController',
-				
 			});
 	}
 ]);
