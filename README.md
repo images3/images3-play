@@ -32,17 +32,15 @@ Download and unzip the compressed package:
     $ wget https://github.com/gogoup/images3-dist/raw/master/images3-play-latest.zip
     $ unzip images3-play-latest.zip
 
+Create default location for image files.
+
+    $ mkdir -p /images3/images
+
 ##Configuring ImageS3
 
 All the configuration files are located in image-play-[version]/conf.
 
 You need to set the following properties before running ImageS3:
-
- * **imagecontent.properties**
-   - *'imagecontent.download.dir'* -- A place used to store images uploaded from clients or download from Amazon S3. Make sure the directory exists.
-   
- * **imageprocessor.properties**
-   - *'image.processing.tempdir'* -- A place used to store resized images. Make sure the directory exists.
 
  * **mongodb.properties**
    - *'mongodb.url'* -- MongoDB server IP address.
@@ -50,7 +48,15 @@ You need to set the following properties before running ImageS3:
    - *'mongodb.username'* -- Username of MongoDB connection. Leave this value empty, if you don't setup username on MongoDB.
    - *'mongodb.password'* -- Password of MongoDB connection. Leave this value empty, if you don't setup password on MongoDB.
 
+If you have a different location for image files, then setup the following configurations.
+
+ * **imagecontent.properties**
+   - *'imagecontent.download.dir'* -- A place used to store images uploaded from clients or download from Amazon S3. Make sure the directory exists.
    
+ * **imageprocessor.properties**
+   - *'image.processing.tempdir'* -- A place used to store resized images. Make sure the directory exists.
+
+ 
 ##Running ImageS3
 
 Enable execution persmissions:
