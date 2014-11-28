@@ -11,10 +11,10 @@ libraryDependencies ++= Seq(
 
 
 libraryDependencies ++= Seq(
-  "com.images3" % "images3-server" % "0.2.0",
-  "com.images3" % "images3-spi-mongodb" % "0.2.0",
-  "com.images3" % "images3-spi-imgcontent" % "0.2.0",
-  "com.images3" % "images3-spi-imgprocessor" % "0.2.0"
+  "com.images3" % "images3-server" % "0.3.0-SNAPSHOT",
+  "com.images3" % "images3-spi-mongodb" % "0.3.0-SNAPSHOT",
+  "com.images3" % "images3-spi-imgcontent" % "0.3.0-SNAPSHOT",
+  "com.images3" % "images3-spi-imgprocessor" % "0.3.0-SNAPSHOT"
 )
 
 resolvers += Resolver.mavenLocal
