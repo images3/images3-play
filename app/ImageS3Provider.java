@@ -16,9 +16,9 @@
 import com.google.inject.Provider;
 import com.images3.ImageS3;
 import com.images3.ImageS3Server;
-import com.images3.core.infrastructure.ImageContentAccessProvider;
-import com.images3.core.infrastructure.ImageProcessorProvider;
-import com.images3.core.infrastructure.MongoDBAccessProvider;
+import com.images3.data.impl.ImageContentAccessProvider;
+import com.images3.data.impl.ImageProcessorProvider;
+import com.images3.data.impl.MongoDBAccessProvider;
 
 
 public class ImageS3Provider implements Provider<ImageS3> {
