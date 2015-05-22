@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6 col-md-8" style="margin-top: 40px;">
-            <div flow-init="{singleFile:true, chunkSize: 100 * 1024 * 1024}" flow-file-added="!!{png:1,jpg:1,jpeg:1,bmp:1}[$file.getExtension()]" flow-name="image.flow">
+            <div flow-init="{singleFile:true, chunkSize: 100 * 1024 * 1024}" flow-file-added="!!{png:1,jpg:1,jpeg:1,bmp:1,gif:1}[$file.getExtension()]" flow-name="image.flow">
                 <div class="thumbnail" ng-show="!$flow.files.length">
                     <img class="img-responsive" src="http://www.placehold.it/500x350/EFEFEF/AAAAAA&amp;text=no+image">
                 </div>
