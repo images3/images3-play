@@ -22,6 +22,7 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 		$scope.imagePlant = initialImagePlant($stateParams.imagePlantId);
 		$scope.errorCode = 0;
 		$scope.errorMessage = '';
+		$scope.awsAPISecretKey = '*********';
 		
 		$scope.viewImagePlant = function(imagePlant) {
 			currentImagePlantId = imagePlant.id;
@@ -89,6 +90,9 @@ imageS3Controllers.controller('ImagePlantController', ['$scope', '$state', '$sta
 			updateImagePlant.id = imagePlant.id;
 			updateImagePlant.name = imagePlant.name;
 			updateImagePlant.bucket = imagePlant.bucket;
+			if ($scope.awsAPISecretKey != '*********') {
+                updateImagePlant.bucket.secretKey = $scope.awsAPISecretKey;
+			}
 	    	ImagePlants.update({imagePlantId: imagePlant.id}, updateImagePlant,
 				function(response) {
 		    		prompt({
