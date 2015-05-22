@@ -4,10 +4,10 @@ ImageS3 is a free and open image hosting service for developers. It is designed 
 
 ##Features
 
- * Create image plants to organize and store images on Amazon S3.
- * Design templates for resizing images into pixels or percents on demand.
+ * Apply AmazonS3 as infrastructure for storing your image files.
+ * Create template to resize your images into different versions.
  * REST APIs for easy application integration.
- * Support PNG, JPG and BMP formats.
+ * Support PNG, JPG, BMP and **GIF** formats.
  * Web-based admin tool with live monitoring:
    
    [<img src="http://i.imgur.com/liGhBmNl.png" height="226" width="610" />](http://i.imgur.com/liGhBmN.png)
