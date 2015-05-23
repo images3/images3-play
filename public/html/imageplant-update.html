@@ -41,19 +41,19 @@
                 <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputBucketName" class="col-sm-3 control-label">S3 Bucket</label>
                     <div class="col-sm-6">
-                        <input ng-model="imagePlant.bucket.name" type="text" class="form-control" id="inputBucketName" placeholder="Amazon S3 Bucket Name">
+                        <input disabled ng-model="imagePlant.bucket.name" type="text" class="form-control" id="inputBucketName" placeholder="Amazon S3 Bucket Name">
                     </div>
                 </div>
                 <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputAccessKey" class="col-sm-3 control-label">API Key</label>
                     <div class="col-sm-6">
-                        <input ng-model="imagePlant.bucket.accessKey" type="text" class="form-control" id="inputAccessKey" placeholder="Amazon API Key">
+                        <input disabled ng-model="imagePlant.bucket.accessKey" type="text" class="form-control" id="inputAccessKey" placeholder="Amazon API Key">
                     </div>
                 </div>
                 <div class="form-group {{errorCode==400110 ? 'has-error' : ''}}">
                     <label for="inputSecretKey" class="col-sm-3 control-label">API Secret</label>
                     <div class="col-sm-6">
-                        <input ng-model="awsAPISecretKey" type="password" class="form-control" id="inputSecretKey" placeholder="Amazon API Secret">
+                        <input disabled ng-model="awsAPISecretKey" type="password" class="form-control" id="inputSecretKey" placeholder="Amazon API Secret">
                     </div>
                     <div class="col-sm-offset-3 col-sm-12 {{errorCode!=400110 ? 'hide' : ''}}">
                         <span class="help-block">{{errorMessage}}</span>

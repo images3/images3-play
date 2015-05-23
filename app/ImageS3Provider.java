@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 import com.google.inject.Provider;
 import com.images3.ImageS3;
 import com.images3.ImageS3Server;
-import com.images3.data.impl.ImageContentAccessProvider;
 import com.images3.data.impl.ImageProcessorProvider;
 import com.images3.data.impl.MongoDBAccessProvider;
+import com.images3.rest.base.DemoImageContentAccessProvider;
 
 
 public class ImageS3Provider implements Provider<ImageS3> {
 
-    private ImageContentAccessProvider imageContentAccessProvider;
+    private DemoImageContentAccessProvider imageContentAccessProvider;
     private ImageProcessorProvider imageProcessorProvider;
     private MongoDBAccessProvider accessProvider;
     
     public ImageS3Provider(String imgContentConf, String imgProcessorConf, String mongodbConf) {
-        imageContentAccessProvider = new ImageContentAccessProvider(imgContentConf);
+        imageContentAccessProvider = new DemoImageContentAccessProvider(imgContentConf);
         imageProcessorProvider = new ImageProcessorProvider(imgProcessorConf);
         accessProvider = new MongoDBAccessProvider(mongodbConf);
     }
